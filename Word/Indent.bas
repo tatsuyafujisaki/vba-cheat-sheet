@@ -1,4 +1,3 @@
-Attribute VB_Name = "Indent"
 Option Explicit
 
 ' Note
@@ -6,16 +5,16 @@ Option Explicit
 ' FirstLineIndent is ignored when CharacterUnitFirstLineIndent is non-zero (positive or negative).
 
 ' ParagraphFormat.CharacterUnitLeftIndent
-' https://msdn.microsoft.com/en-us/library/office/ff836968.aspx
+' https://msdn.microsoft.com/library/office/ff836968.aspx
 
 ' ParagraphFormat.CharacterUnitFirstLineIndent
-' https://msdn.microsoft.com/en-us/library/office/ff840585.aspx
+' https://msdn.microsoft.com/library/office/ff840585.aspx
 
 ' ParagraphFormat.LeftIndent
-' https://msdn.microsoft.com/en-us/library/office/ff837464.aspx
+' https://msdn.microsoft.com/library/office/ff837464.aspx
 
 ' ParagraphFormat.FirstLineIndent
-' https://msdn.microsoft.com/en-us/library/office/ff836045.aspx
+' https://msdn.microsoft.com/library/office/ff836045.aspx
 
 Private Sub Demo()
     Dim p As Paragraph
@@ -24,7 +23,7 @@ Private Sub Demo()
     ResetIndent p
 End Sub
 
-Private Sub ResetIndent(p As Paragraph)
+Private Sub ResetIndent(ByRef p As Paragraph)
     p.Range.Select
     
     With Selection.ParagraphFormat
@@ -37,7 +36,7 @@ Private Sub ResetIndent(p As Paragraph)
     Selection.HomeKey wdStory
 End Sub
 
-Sub SetHangingIndentInCharacterUnit(p As Paragraph, indent As Single, additionalIndentForHanging As Single)
+Public Sub SetHangingIndentInCharacterUnit(ByRef p As Paragraph, ByVal indent As Single, ByVal additionalIndentForHanging As Single)
     p.Range.Select
     
     With Selection.ParagraphFormat
@@ -58,7 +57,7 @@ Sub SetHangingIndentInCharacterUnit(p As Paragraph, indent As Single, additional
 End Sub
 
 
-Sub SetHangingIndentInPoint(p As Paragraph, indent As Single, additionalIndentForHanging As Single)
+Public Sub SetHangingIndentInPoint(ByRef p As Paragraph, ByVal indent As Single, ByVal additionalIndentForHanging As Single)
     p.Range.Select
     
     With Selection.ParagraphFormat
