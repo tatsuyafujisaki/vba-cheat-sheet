@@ -13,33 +13,52 @@ Private Sub CompareDocuments()
     Dim fso As New FileSystemObject
     Dim dealDir As folder
     For Each dealDir In fso.GetFolder(InputDir).SubFolders
-        Dim oldDir As String: oldDir = fso.BuildPath(dealDir.path, "Old")
-        Dim newDir As String: newDir = fso.BuildPath(dealDir.path, "New")
-        If Dir(oldDir, vbDirectory) = "" Then
+        Dim oldDir As String
+        oldDir = fso.BuildPath(dealDir.path, "Old")
+        
+        Dim newDir As String
+        newDir = fso.BuildPath(dealDir.path, "New")
+        
+        If Dir(oldDir, vbDirectory) = vbNullString Then
             Debug.Print oldDir & " does not exist"
-        ElseIf Dir(newDir, vbDirectory) = "" Then
+        ElseIf Dir(newDir, vbDirectory) = vbNullString Then
             Debug.Print newDir & " does not exist"
         Else
-            Dim oldOtDirs As Folders: Set oldOtDirs = fso.GetFolder(oldDir).SubFolders
-            Dim newOtDirs As Folders: Set newOtDirs = fso.GetFolder(newDir).SubFolders
+            Dim oldOtDirs As Folders
+            Set oldOtDirs = fso.GetFolder(oldDir).SubFolders
+            
+            Dim newOtDirs As Folders
+            Set newOtDirs = fso.GetFolder(newDir).SubFolders
+            
             If oldOtDirs.Count <> newOtDirs.Count Then
                 Debug.Print "# of outTypeDirs differ at " & dealDir
             Else
                 Dim otDir As folder
                 For Each otDir In oldOtDirs
                     Dim file As file
-                    Dim nFiles As Long: nFiles = 1
+                    Dim fileCount As Long
+                    fileCount = 1
                     For Each file In otDir.Files
-                        Dim oldFile As String: oldFile = file.path
-                        Dim newFile As String: newFile = Replace(file.path, "\Old\", "\New\")
+                        
+                        Dim oldFile As String
+                        oldFile = file.path
+                        
+                        Dim newFile As String
+                        newFile = Replace(file.path, "\Old\", "\New\")
+                        
                         If IsDocument(oldFile) And Not IsBackup(oldFile) Then
-                            Dim oldDoc As Document: Set oldDoc = Documents.Open(oldFile)
-                            Dim newDoc As Document: Set newDoc = Documents.Open(newFile)
+                            
+                            Dim oldDoc As Document
+                            Set oldDoc = Documents.Open(oldFile)
+                            
+                            Dim newDoc As Document
+                            Set newDoc = Documents.Open(newFile)
+                            
                             Application.CompareDocuments oldDoc, newDoc
-                            SaveUnsavedDocument fso.BuildPath(OutputDir, dealDir.Name & "_" & otDir.Name & "_" & nFiles & ".docx")
+                            SaveUnsavedDocument fso.BuildPath(OutputDir, dealDir.Name & "_" & otDir.Name & "_" & fileCount & ".docx")
                             CloseAllDocuments
                             CloseAllDocuments
-                            nFiles = nFiles + 1
+                            fileCount = fileCount + 1
                         End If
                     Next
                 Next
@@ -50,14 +69,15 @@ End Sub
 
 Private Function IsDocument(ByVal path As String) As Boolean
     With New FileSystemObject
-        Dim ext As String: ext = .GetExtensionName(path)
+        Dim ext As String
+        ext = .GetExtensionName(path)
     End With
     IsDocument = (StrComp(ext, "docx", vbTextCompare) = 0) Or (StrComp(ext, "doc", vbTextCompare) = 0)
 End Function
 
 Private Function IsBackup(ByVal path As String) As Boolean
     With New FileSystemObject
-        IsBackup = Left(.GetBaseName(path), 1) = "~"
+        IsBackup = Left$(.GetBaseName(path), 1) = "~"
     End With
 End Function
 
@@ -71,7 +91,7 @@ End Sub
 Private Sub SaveUnsavedDocument(ByVal path As String)
     Dim d As Document
     For Each d In Application.Documents
-        If d.path = "" Then
+        If d.path = vbNullString Then
             With New FileSystemObject
                 MkDirIfNotExist .GetParentFolderName(path)
             End With
@@ -82,7 +102,7 @@ Private Sub SaveUnsavedDocument(ByVal path As String)
 End Sub
 
 Private Sub MkDirIfNotExist(ByVal path As String)
-    If Dir(path, vbDirectory) = "" Then MkDir path
+    If Dir(path, vbDirectory) = vbNullString Then MkDir path
 End Sub
 
 Private Sub SetTabstopAtRightEnd()
