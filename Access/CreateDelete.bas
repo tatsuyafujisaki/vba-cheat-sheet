@@ -1,3 +1,4 @@
+Option Compare Database
 Option Explicit
 
 Private Sub CallCreateTable()
@@ -7,7 +8,7 @@ Private Sub CallCreateTable()
     CreateTable "Table1", "Field1", fields
 End Sub
 
-Private Sub CreateTable(ByVal table As String, ByVal pk As String, fields As Dictionary)
+Private Sub CreateTable(ByVal table As String, ByVal pk As String, ByVal fields As Dictionary)
     If TableExists(table) Then CurrentDb.TableDefs.Delete table
     Dim td As DAO.TableDef
     Set td = CurrentDb.CreateTableDef(table)
@@ -32,14 +33,14 @@ Private Sub CallAddRecords()
     AddRecords "Table1", table
 End Sub
 
-Private Sub AddRecords(ByVal tableName As String, table As Variant)
+Private Sub AddRecords(ByVal tableName As String, ByVal table As Variant)
     With CurrentDb.TableDefs(tableName).OpenRecordset
-        Dim iRow As Long
-        For iRow = 0 To UBound(table)
+        Dim rowIndex As Long
+        For rowIndex = 0 To UBound(table)
             .AddNew
-            Dim iCol As Long
-            For iCol = 0 To UBound(table, 2)
-                .fields(iCol) = table(iRow, iCol)
+            Dim columnIndex As Long
+            For columnIndex = 0 To UBound(table, 2)
+                .fields(columnIndex) = table(rowIndex, columnIndex)
             Next
             .Update
         Next
@@ -51,16 +52,35 @@ Private Sub CreatePassThroughQuery(ByVal name As String, ByVal sql As String)
     CurrentDb.QueryDefs.Delete name
     On Error GoTo 0
     With CurrentDb.CreateQueryDef(name)
-        .CONNECT = "ODBC;Driver=SQL Server;Server=server1,port1;Database=database1;Uid=uid1;Pwd=pwd1"
-        .SQL = sql
+        .connect = "ODBC;Driver=SQL Server;Server=server1,port1;Database=database1;Uid=uid1;Pwd=pwd1"
+        .sql = sql
         .Close
     End With
 End Sub
 
-Private Sub UnlinkTables()
+Private Sub UnlinkTables1()
     Dim td As DAO.TableDef
     For Each td In CurrentDb.TableDefs
-        If td.connect <> "" Then CurrentDb.TableDefs.Delete td.name
+        If td.connect <> vbNullString Then CurrentDb.TableDefs.Delete td.name
+    Next
+End Sub
+
+Private Sub UnlinkTables2()
+    Dim findMeList As Variant
+    findMeList = Array("Accdb1.accdb", "Mdb1.mdb")
+    Dim td As DAO.TableDef
+    For Each td In CurrentDb.TableDefs
+        Dim path As String
+        path = GetDbPath(td.connect)
+        If path <> vbNullString Then
+            Dim findMe As Variant
+            For Each findMe In findMeList
+                If Right$(path, Len(findMe)) = findMe Then
+                    CurrentDb.TableDefs.Delete td.name
+                    Exit For
+                End If
+            Next
+        End If
     Next
 End Sub
 
@@ -74,15 +94,15 @@ Private Sub LinkTable(ByVal connect As String, ByVal remoteName As String, ByVal
 End Sub
 
 Private Sub CreateLocalQueries()
-  Dim file As Variant
-  For Each file In GetFiles(New Collection, CurrentProject.path & "\release\queries", Array("sql"))
-    Dim name As String
-    name = GetBaseName(file)
-    On Error Resume Next
-    CurrentDb.QueryDefs.Delete name
-    On Error GoTo 0
-    CurrentDb.CreateQueryDef name, ReadText(file)
-  Next
+    Dim file As Variant
+    For Each file In GetFiles(New Collection, CurrentProject.path & "\release\queries", Array("sql"))
+        Dim name As String
+        name = GetBaseName(file)
+        On Error Resume Next
+        CurrentDb.QueryDefs.Delete name
+        On Error GoTo 0
+        CurrentDb.CreateQueryDef name, ReadText(file)
+    Next
 End Sub
 
 Private Sub DeleteObjectOfAllKinds(ByVal name As String)
@@ -94,25 +114,6 @@ Private Sub DeleteObjectOfAllKinds(ByVal name As String)
     On Error GoTo 0
 End Sub
 
-Private Sub UnlinkTables()
-    Dim findMeList As Variant
-    findMeList = Array("Accdb1.accdb", "Mdb1.mdb")
-    Dim td As DAO.TableDef
-    For Each td In CurrentDb.TableDefs
-        Dim path As String
-        path = GetDbPath(td.connect)
-        If path <> "" Then
-            Dim findMe As Variant
-            For Each findMe In findMeList
-                If Right(path, Len(findMe)) = findMe Then
-                    CurrentDb.TableDefs.Delete td.name
-                    Exit For
-                End If
-            Next
-        End If
-    Next
-End Sub
-
 Private Sub RedirectLinkTables()
     Dim findMeList As Variant
     findMeList = Array("Accdb1.accdb", "Mdb1.mdb")
@@ -120,10 +121,10 @@ Private Sub RedirectLinkTables()
     For Each td In CurrentDb.TableDefs
         Dim path As String
         path = GetDbPath(td.connect)
-        If path <> "" Then
+        If path <> vbNullString Then
             Dim findMe As Variant
             For Each findMe In findMeList
-                If Right(path, Len(findMe)) = findMe Then
+                If Right$(path, Len(findMe)) = findMe Then
                     td.connect = ";Database=" & CurrentProject.path & findMe
                     td.RefreshLink
                     Exit For
@@ -133,7 +134,7 @@ Private Sub RedirectLinkTables()
     Next
 End Sub
 
-Private Sub CompleteQuery(ByVal queryName As String, params As Dictionary)
+Private Sub CompleteQuery(ByVal queryName As String, ByVal params As Dictionary)
     With New FileSystemObject
         With .GetFile(.BuildPath(CurrentProject.path, queryName & ".sql")).OpenAsTextStream
             Dim sql As String
