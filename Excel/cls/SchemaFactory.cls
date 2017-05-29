@@ -18,5 +18,5 @@ End Sub
 Private Sub Class_Terminate()
     Dim filePath As String
     filePath = directoryPath & "\" & "Schema.ini"
-    If dir(filePath) <> "" Then Kill filePath
+    If dir(filePath) <> vbNullString Then Kill filePath
 End Sub
