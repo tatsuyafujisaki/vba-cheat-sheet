@@ -1,21 +1,32 @@
 Option Explicit
 
-Private su As Boolean
-Private c As Long
+Private screenUpdating As Boolean
+Private displayStatusBar As Boolean
+Private enableEvent As Boolean
+Private caluclation As Long
 
 Private Sub Class_Initialize()
     With Application
-        su = .ScreenUpdating
-        c = .Calculation
-        .ScreenUpdating = False
+        screenUpdating = .screenUpdating
+        .screenUpdating = False
+        
+        displayStatusBar = Application.displayStatusBar
+        .displayStatusBar = False
+        
+        enableEvent = Application.EnableEvents
+        .EnableEvents = False
+
+        caluclation = .Calculation
         .Calculation = xlCalculationManual
     End With
 End Sub
 
 Private Sub Class_Terminate()
     With Application
-        .Calculation = c
-        .ScreenUpdating = su
+        .Calculation = caluclation
+        .EnableEvents = enableEvent
+        .displayStatusBar = displayStatusBar
+        .screenUpdating = screenUpdating
     End With
 End Sub
 
