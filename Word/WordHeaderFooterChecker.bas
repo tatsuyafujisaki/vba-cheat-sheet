@@ -19,17 +19,17 @@ Private Sub Main()
     PrintBodyShapes d
     PrintHeaderFooterShapes d
 
-    ThisDocument.ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageHeader
+    d.ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageHeader
 End Sub
 
-Private Sub RenameShapeToAmendment(s As Shape)
+Private Sub RenameShapeToAmendment(ByVal s As Shape)
         If s.Name = "Amendment" Or s.Name = "Rectangle 5" Or s.Name = "Rectangle 12" Then
             s.Name = "Amendment"
             s.Fill.ForeColor = RGB(255, 255, 0)
         End If
 End Sub
 
-Private Sub PrintPageSetup(d As Document)
+Private Sub PrintPageSetup(ByVal d As Document)
     Printf "DifferentFirstPageHeaderFooter = {0}", CBool(d.PageSetup.DifferentFirstPageHeaderFooter)
     Printf "OddAndEvenPagesHeaderFooter = {0}", CBool(d.PageSetup.OddAndEvenPagesHeaderFooter)
     ' DifferentFirstPageHeaderFooter
@@ -38,9 +38,9 @@ Private Sub PrintPageSetup(d As Document)
     ' https://msdn.microsoft.com/en-us/library/office/ff821984.aspx
 End Sub
 
-Private Sub PrintBodyHeaderFooterBookmarks(d As Document, ByVal overwrite As Boolean, ByVal insert As Boolean)
+Private Sub PrintBodyHeaderFooterBookmarks(ByVal d As Document, ByVal overwrite As Boolean, ByVal insert As Boolean)
     Dim b As Bookmark
-    For Each b In ThisDocument.Bookmarks
+    For Each b In d.Bookmarks
         With b.Range
             If overwrite Then
                 'Bookmark.Text is write-only. Reading the property returns an empty string.
@@ -56,19 +56,19 @@ Private Sub PrintBodyHeaderFooterBookmarks(d As Document, ByVal overwrite As Boo
     Next
 End Sub
 
-Private Sub PrintBodyText(d As Document)
+Private Sub PrintBodyText(ByVal d As Document)
     Debug.Print "Text =" & d.Range.Text
 End Sub
 
-Private Sub PrintBodyShapes(d As Document)
+Private Sub PrintBodyShapes(ByVal d As Document)
     Dim s As Shape
-    For Each s In ThisDocument.Shapes
+    For Each s In d.Shapes
         RenameShapeToAmendment s
         Printf "Body Shape = {0}", s.Name
     Next
 End Sub
 
-Private Sub PrintHeaderFooterShapes(d As Document)
+Private Sub PrintHeaderFooterShapes(ByVal d As Document)
     ' Setting wdSeekMainDocument to SeekView makes d.Application.Selection.HeaderFooter null.
     ' Setting one of the following 6 to SeekView causes an error when trying to assing to SeekView.
     ' wdSeekFirstPageHeader
@@ -99,12 +99,12 @@ Private Sub PrintHeaderFooterShapes(d As Document)
     d.ActiveWindow.ActivePane.View.SeekView = wdSeekMainDocument
 End Sub
 
-Private Sub PrintSectionPageSetup(s As Section)
+Private Sub PrintSectionPageSetup(ByVal s As Section)
     Printf "(SectionIndex, DifferentFirstPageHeaderFooter) = ({0}, {1})", s.Index, CBool(s.PageSetup.DifferentFirstPageHeaderFooter)
     Printf "(SectionIndex, OddAndEvenPagesHeaderFooter) = ({0}, {1})", s.Index, CBool(s.PageSetup.OddAndEvenPagesHeaderFooter)
 End Sub
 
-Private Sub PrintHeaderText(s As Section, ByVal overwrite As Boolean, ByVal insert As Boolean)
+Private Sub PrintHeaderText(ByVal s As Section, ByVal overwrite As Boolean, ByVal insert As Boolean)
     Dim h As HeaderFooter
     For Each h In s.Headers
         Dim e As String
@@ -122,7 +122,7 @@ Private Sub PrintHeaderText(s As Section, ByVal overwrite As Boolean, ByVal inse
     Next
 End Sub
 
-Private Sub PrintFooterText(s As Section, ByVal overwrite As Boolean, ByVal insert As Boolean)
+Private Sub PrintFooterText(ByVal s As Section, ByVal overwrite As Boolean, ByVal insert As Boolean)
     Dim f As HeaderFooter
     For Each f In s.Footers
         Dim e As String
@@ -187,7 +187,7 @@ Private Function GetSeekViewEnum(ByVal i As Long) As String
 End Function
 
 Public Function MyTrim(ByVal s As String) As String
-    MyTrim = Trim(Trim(Replace(Replace(Replace(s, vbCr, ""), vbLf, ""), vbCrLf, "")))
+    MyTrim = Trim$(Trim$(Replace(Replace(Replace(s, vbCr, vbNullString), vbLf, vbNullString), vbCrLf, vbNullString)))
 End Function
 
 Public Function StringFormat(ByVal format As String, ParamArray args()) As String
