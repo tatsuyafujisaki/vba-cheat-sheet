@@ -1,21 +1,5 @@
 Option Explicit
 
-Private Sub ExcelSample()
-    Dim ew As New ExcelWrapper
-    With ew.excel
-        .SheetsInNewWorkbook = 1
-        .ScreenUpdating = False
-        .DisplayAlerts = False
-        Dim wb As Workbook
-        Set wb = .Workbooks.Add
-        Dim ws As Worksheet
-        Set ws = wb.Sheets(1)
-        .Visible = True
-        .DisplayAlerts = True
-        .ScreenUpdating = True
-    End With
-End Sub
-
 Private Sub Form_Open(Cancel As Integer)
     DoCmd.RunCommand acCmdSizeToFitForm
 End Sub
@@ -25,18 +9,18 @@ Private Sub Form_Timer()
     Const END_UNAVAILABLE As Long = 4
     Dim STOPPER As String
     STOPPER = CurrentProject.path & "\stop.txt"
-    If (START_UNAVAILABLE <= Hour(Time) And Hour(Time) <= END_UNAVAILABLE) Or (Dir(STOPPER) <> "") Then Application.Quit acQuitSaveNone
+    If (START_UNAVAILABLE <= Hour(Time) And Hour(Time) <= END_UNAVAILABLE) Or (Dir(STOPPER) <> vbNullString) Then Application.Quit acQuitSaveNone
 End Sub
 
 Private Function IsProduction() As Boolean
     Const PRD_DIR As String = "path/to/production"
-    IsProduction = CurrentProject.Path = PRD_DIR
+    IsProduction = CurrentProject.path = PRD_DIR
 End Function
 
 Private Sub LoosenTable(ByVal tableName As String)
     DoCmd.Close acTable, tableName
     Dim field As field
-    With CurrentDb 'instantiate db
+    With CurrentDb
         For Each field In .TableDefs(tableName).fields
             With field
                 .Required = False
@@ -71,7 +55,7 @@ Private Function SelectQuery(ByVal queryName As String) As Variant
     End With
 End Function
 
-Private Sub SelectQueryOneRow(ByVal queryName As String, result As Dictionary)
+Private Sub SelectQueryOneRow(ByVal queryName As String, ByVal result As Dictionary)
     With CurrentDb.QueryDefs(queryName).OpenRecordset
         If .EOF Then
             MsgBox "No record"
@@ -79,24 +63,24 @@ Private Sub SelectQueryOneRow(ByVal queryName As String, result As Dictionary)
         End If
         Dim key As Variant
         For Each key In result.Keys
-            result(key) = .Fields(key)
+            result(key) = .fields(key)
         Next
         .Close
     End With
 End Sub
 
-Private Sub SelectQueryToRange(ByVal queryName As String, r As Range, ByVal includeHeader As Boolean)
+Private Sub SelectQueryToRange(ByVal queryName As String, ByVal r As Range, ByVal includeHeader As Boolean) ' Microsoft Excel 15.0 Object Library
     Dim rs As DAO.Recordset
     Set rs = CurrentDb.QueryDefs(queryName).OpenRecordset
     If rs.EOF Then
         MsgBox "No record found"
-        Err.Raise 63 'Bad record number (https://support.microsoft.com/kb/146864)
-        'This error is to let the parent do Excel.Quit
+        Err.Raise 63 ' Bad record number (https://support.microsoft.com/kb/146864)
+        ' This error is to let the parent do Excel.Quit
     End If
     If includeHeader Then
-        Dim iCol As Long
-        For iCol = 1 To rs.Fields.Count
-            r.Cells(1, iCol).Value = rs.Fields(iCol - 1).Name
+        Dim columnIndex As Long
+        For columnIndex = 1 To rs.fields.count
+            r.Cells(1, columnIndex).Value = rs.fields(columnIndex - 1).name
         Next
         Set r = r.Offset(1)
     End If
@@ -108,11 +92,11 @@ Private Sub NonSelectQuery(ByVal queryName As String)
     CurrentDb.QueryDefs(queryName).Execute dbFailOnError
 End Sub
 
-Private Function SelectSqls(sqls As Collection) As Variant
+Private Function SelectSqls(ByVal sqls As Collection) As Variant
     Dim sql As String
     sql = sqls(1)
     Dim i As Long
-    For i = 2 To sqls.Count
+    For i = 2 To sqls.count
         sql = sql & " UNION ALL " & sqls(i)
     Next
     With CurrentDb.OpenRecordset(sql)
@@ -126,7 +110,7 @@ Private Function SelectSqls(sqls As Collection) As Variant
 End Function
 
 Private Function SelectSql(ByVal sql As String) As Variant
-    With CurrentDb.OpenRecordset(SQL)
+    With CurrentDb.OpenRecordset(sql)
         .MoveLast
         Dim rc As Long
         rc = .RecordCount
@@ -136,7 +120,7 @@ Private Function SelectSql(ByVal sql As String) As Variant
     End With
 End Function
 
-Private Sub NonSelectSqls(sqls As Collection)
+Private Sub NonSelectSqls(ByVal sqls As Collection)
     DBEngine.BeginTrans
     Dim sql As Variant
     For Each sql In sqls
@@ -149,20 +133,20 @@ Private Sub NonSelectSql(ByVal sql As String)
     CurrentDb.Execute sql, dbFailOnError
 End Sub
 
-'Usage: UpdateColumn "Table1", "Column1 = " & Quote("foo") & " And Column2 = " & Quote("bar"), "Column3", Quote("baz")
+' Usage: UpdateColumn "Table1", "Column1 = " & Quote("foo") & " And Column2 = " & Quote("bar"), "Column3", Quote("baz")
 Private Sub UpdateColumn(ByVal table As String, ByVal key As String, ByVal columnToUpdate As String, ByVal valueToSet As String)
     With CurrentDb.OpenRecordset(table)
         .FindFirst key
         .Edit
-        .Fields(columnToUpdate).value = valueToSet
+        .fields(columnToUpdate).Value = valueToSet
         .Update
     End With
 End Sub
 
-private Function HasRecord(ByVal table As String, ByVal where As String) As Boolean
+Private Function HasRecord(ByVal table As String, ByVal where As String) As Boolean
     With CurrentDb.OpenRecordset("SELECT COUNT(*) FROM " & table & " WHERE " & where)
         Dim count As Variant
-        count = .GetRows 'Seemingly redundant but necessary because .GetRows(0, 0) makes an error
+        count = .GetRows ' Seemingly redundant but necessary because .GetRows(0, 0) makes an error
         HasRecord = (0 < count(0, 0))
         .Close
     End With
@@ -171,7 +155,7 @@ End Function
 Private Function InsertOrUpdate(ByVal table As String, ByVal pkName As String, ByVal pkValue As String, ByVal csv As String) As Boolean
     With CurrentDb.OpenRecordset("SELECT COUNT(*) FROM " & table & " WHERE " & pkName & " = " & pkValue)
         Dim count As Variant
-        count = .GetRows 'Seemingly redundant but necessary because .GetRows(0, 0) makes an error
+        count = .GetRows ' Seemingly redundant but necessary because .GetRows(0, 0) makes an error
         If 0 < count(0, 0) Then CurrentDb.Execute "DELETE FROM " & table & " WHERE " & pkName & " = " & pkValue, dbFailOnError
         .Close
     End With
@@ -183,12 +167,12 @@ Private Sub ImportObject(ByVal type1 As AcObjectType, ByVal name As String)
     On Error Resume Next
     DoCmd.DeleteObject type1, name
     On Error GoTo 0
-    DoCmd.TransferDatabase acImport, "Microsoft Access", CurrentProject.Path & "\" & IMPORT_FROM, type1, name, name
+    DoCmd.TransferDatabase acImport, "Microsoft Access", CurrentProject.path & "\" & IMPORT_FROM, type1, name, name
 End Sub
 
 Private Sub ExportObject(ByVal type1 As AcObjectType, ByVal name As String)
     Const EXPORT_TO As String = "production.mdb"
-    DoCmd.TransferDatabase acExport, "Microsoft Access", CurrentProject.Path & "\" & EXPORT_TO, type1, name, name
+    DoCmd.TransferDatabase acExport, "Microsoft Access", CurrentProject.path & "\" & EXPORT_TO, type1, name, name
 End Sub
 
 Private Sub ReleaseByImporting()
@@ -211,15 +195,15 @@ End Sub
 
 Private Sub EnableCloseMinMaxButtons()
     Dim ao As AccessObject
-    Dim v
+    Dim v As Variant
     For Each ao In CurrentProject.AllForms
-        DoCmd.Close acForm, ao.Name, acSaveNo
-        DoCmd.OpenForm ao.Name, acDesign, windowmode:=acHidden
-        With Forms(ao.Name)
+        DoCmd.Close acForm, ao.name, acSaveNo
+        DoCmd.OpenForm ao.name, acDesign, windowmode:=acHidden
+        With Forms(ao.name)
             .CloseButton = True
-            .MinMaxButtons = 3 'http://msdn.microsoft.com/en-us/library/office/ff845417.aspx
+            .MinMaxButtons = 3 ' http://msdn.microsoft.com/library/office/ff845417.aspx
         End With
-        DoCmd.Close acForm, ao.Name, acSaveYes
+        DoCmd.Close acForm, ao.name, acSaveYes
     Next
 End Sub
 
@@ -231,9 +215,9 @@ Private Sub SetFormat()
     Const LABEL_TEXTBOX_COMBOBOX_HEIGHT As Long = 0.5 * TWIPS
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllForms
-        DoCmd.OpenForm ao.Name, acDesign
+        DoCmd.OpenForm ao.name, acDesign
         Dim c As Control
-        For Each c In Forms(ao.Name).Controls
+        For Each c In Forms(ao.name).Controls
             c.FontSize = 10
             c.FontName = "Meiryo UI"
             c.ForeColor = RGB(0, 0, 0)
