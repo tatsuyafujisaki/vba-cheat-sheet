@@ -1,3 +1,4 @@
+Option Compare Database
 Option Explicit
 
 Private Sub PrintRecordset(rs As Recordset)
