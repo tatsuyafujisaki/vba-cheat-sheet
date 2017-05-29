@@ -1,3 +1,4 @@
+Option Compare Database
 Option Explicit
 
 Private Sub HideNavigationWindow()
@@ -25,6 +26,6 @@ Private Function GetThisModuleName() As String
     GetThisModuleName = VBE.ActiveCodePane.CodeModule.name
 End Function
 
-Private Sub DeleteModule(ByVal name As String)
-    VBE.VBProjects(1).VBComponents.Remove name
+Private Sub DeleteModule(ByVal vbc As VBComponent)
+    VBE.VBProjects(1).VBComponents.Remove vbc
 End Sub
