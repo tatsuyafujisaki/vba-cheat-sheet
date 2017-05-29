@@ -1,3 +1,4 @@
+Option Compare Database
 Option Explicit
 
 Private Sub DumpObjects()
@@ -7,7 +8,7 @@ Private Sub DumpObjects()
     outRoot = GetBuiltPath(CurrentProject.path, "dump")
     MkDirIfNotExist outRoot
 
-    Dim outDir
+    Dim outDir As String
     outDir = GetBuiltPath(outRoot, "macros")
     MkDirIfNotExist outDir
 
