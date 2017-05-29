@@ -6,29 +6,7 @@ Private Function GetConnectionString(ByVal isProduction As Boolean) As String
     GetConnectionString = IIf(isProduction, productionCs, developmentCs)
 End Function
 
-Private Function SelectSqls(sqls As Collection)
-    Const connectionString As String = "Driver=SQL Server;Server=server1,port1;Database=database1;Uid=uid1;Pwd=pwd1"
-    Dim sql As String
-    sql = sqls(1)
-    Dim i As Long
-    For i = 2 To sqls.Count
-        sql = sql & " UNION ALL " & sqls(i)
-    Next
-    Dim cn As New ADODB.Connection 'Microsoft ActiveX Data Object x.x Library
-    cn.Open connectionString
-    With New ADODB.Recordset
-        .Open sql, cn, adOpenStatic
-        If .RecordCount = 0 Then 'IIf makes an error
-            SelectSqls = Null
-        Else
-            SelectSqls = WorksheetFunction.Transpose(.GetRows)
-        End If
-        .Close
-    End With
-    cn.Close
-End Function
-
-Private Function SelectSql(ByVal sql As String)
+Private Function SelectSql(ByVal sql As String) As Variant
     Const connectionString As String = "Driver=SQL Server;Server=server1,port1;Database=database1;Uid=uid1;Pwd=pwd1"
     Dim cn As New ADODB.Connection 'Microsoft ActiveX Data Object x.x Library
     cn.Open connectionString
@@ -44,12 +22,12 @@ Private Function SelectSql(ByVal sql As String)
     cn.Close
 End Function
 
-Private Sub NonSelectSqls(sqls As Collection)
+Private Sub NonSelectSqls(ByVal sqls As Collection)
     Const connectionString As String = "Driver=SQL Server;Server=server1,port1;Database=database1;Uid=uid1;Pwd=pwd1"
     With New ADODB.Connection 'Microsoft ActiveX Data Object x.x Library
         .Open connectionString
         .BeginTrans
-        Dim sql
+        Dim sql As Object
         For Each sql In sqls
             .Execute sql
         Next
