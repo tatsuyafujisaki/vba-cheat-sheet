@@ -1,3 +1,4 @@
+Option Compare Database
 Option Explicit
 
 Private Sub TransferObjects()
@@ -16,11 +17,11 @@ Private Sub TransferObjects()
     Next
     Dim td As DAO.TableDef
     For Each td In CurrentDb.TableDefs
-        If Left(td.name, 4) <> "MSys" Then TransferObject acTable, td.name
+        If Left$(td.name, 4) <> "MSys" Then TransferObject acTable, td.name
     Next
     Dim qd As DAO.QueryDef
     For Each qd In CurrentDb.QueryDefs
-        If Left(qd.name, 1) <> "~" Then TransferObject acQuery, qd.name
+        If Left$(qd.name, 1) <> "~" Then TransferObject acQuery, qd.name
     Next
     MsgBox "Done!"
 End Sub
