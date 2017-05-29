@@ -1,6 +1,6 @@
 Option Explicit
 
-Private Function EncodeBase64(ByVal s As String)
+Private Function EncodeBase64(ByVal s As String) As Variant
     With New DOMDocument60 'Microsoft XML, v6.0
         With .createElement("foo")
             .DataType = "bin.base64"
@@ -10,7 +10,7 @@ Private Function EncodeBase64(ByVal s As String)
   End With
 End Function
 
-Private Function DecodeBase64(ByVal s As String)
+Private Function DecodeBase64(ByVal s As String) As Variant
     With New DOMDocument60 'Microsoft XML, v6.0
         With .createElement("foo")
             .DataType = "bin.base64"
@@ -33,7 +33,7 @@ Private Function GetBytes(ByVal s As String) As Byte()
     End With
 End Function
 
-Private Function GetString(bytes() As Byte) As String
+Private Function GetString(ByRef bytes() As Byte) As String
     With New ADODB.Stream 'Microsoft ActiveX Data Object x.x Library
         .Open
         .Type = adTypeBinary
