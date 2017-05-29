@@ -1,11 +1,12 @@
+Option Compare Database
 Option Explicit
 
 Private Sub LocalizeLinkTable(ByVal remoteTable As String, ByVal localTable As String)
-    Const CONNECT As String = "ODBC;DRIVER=SQL Server;SERVER=server1,port1;DATABASE=database1;UID=uid1;PWD=pwd1"
+    Const Connect As String = "ODBC;DRIVER=SQL Server;SERVER=server1,port1;DATABASE=database1;UID=uid1;PWD=pwd1"
     On Error Resume Next
     DoCmd.DeleteObject acTable, localTable
     On Error GoTo 0
-    DoCmd.TransferDatabase acImport, "ODBC Database", CONNECT, acTable, remoteTable, localTable
+    DoCmd.TransferDatabase acImport, "ODBC Database", Connect, acTable, remoteTable, localTable
 End Sub
 
 Private Sub PrintConnectionStrings()
@@ -32,12 +33,12 @@ Private Sub UpdateLocalLinkTables()
     Dim td As DAO.TableDef
     For Each td In CurrentDb.TableDefs
         Dim path As String
-        path = GetDbPath(td.CONNECT)
-        If path <> "" Then
+        path = GetDbPath(td.Connect)
+        If path <> vbNullString Then
             Dim findMe As Variant
             For Each findMe In findMeList
-                If Right(path, Len(findMe)) = findMe Then
-                    td.CONNECT = ";Database=" & CurrentProject.path & "\Server\" & findMe
+                If Right$(path, Len(findMe)) = findMe Then
+                    td.Connect = ";Database=" & CurrentProject.path & "\Server\" & findMe
                     td.RefreshLink
                     Exit For
                 End If
@@ -46,15 +47,15 @@ Private Sub UpdateLocalLinkTables()
     Next
 End Sub
 
-Private Function GetDbPath(ByVal connectionString As String) As String
+Private Function GetDbPath(ByVal ConnectionString As String) As String
     With New RegExp 'Microsoft VBScript Regular Expressions x.x
         .Pattern = "DATABASE=(.+\.(accdb|mdb))"
         Dim mc As MatchCollection
-        Set mc = .Execute(connectionString)
+        Set mc = .Execute(ConnectionString)
         If mc.Count Then 'NB: IIf makes an error
             GetDbPath = mc(0).SubMatches(0)
         Else
-            GetDbPath = ""
+            GetDbPath = vbNullString
         End If
     End With
 End Function
