@@ -17,94 +17,93 @@ Private Sub RemoveCommentsForAccess()
     Next
 End Sub
 
-' Referenes "Microsoft Visual Basic for Applications Extensibility 5.x" for CodeModule
-Private Sub RemoveComments(cm As CodeModule)
+Private Sub RemoveComments(ByVal cm As CodeModule) ' Microsoft Visual Basic for Applications Extensibility 5.3
     Const nonComment As Long = -1
     Const blank As Long = -2
     Const fullComment As Long = -3
     Const doubleQuote As Long = 34
     Const singleQuote As Long = 39
     ReDim lineTypes(1 To cm.CountOfLines) As Long
-    Dim iLine As Long
-    For iLine = 1 To cm.CountOfLines
-        lineTypes(iLine) = nonComment
+    Dim lineIndex As Long
+    For lineIndex = 1 To cm.CountOfLines
+        lineTypes(lineIndex) = nonComment
         Dim line As String
-        line = cm.Lines(iLine, 1)
-        If Trim(line) = "" Then
-            lineTypes(iLine) = blank
-        ElseIf Left(Trim(line), 1) = Chr(singleQuote) Or IsContinualComment(cm, lineTypes, iLine) Then
-            lineTypes(iLine) = fullComment
+        line = cm.Lines(lineIndex, 1)
+        If Trim$(line) = vbNullString Then
+            lineTypes(lineIndex) = blank
+        ElseIf Left$(Trim$(line), 1) = Chr$(singleQuote) Or IsContinualComment(cm, lineTypes, lineIndex) Then
+            lineTypes(lineIndex) = fullComment
         Else
             Dim inDoubleQuotes As Boolean
             inDoubleQuotes = False
-            Dim iPos As Long
-            For iPos = 1 To Len(line)
+            Dim positionIndex As Long
+            For positionIndex = 1 To Len(line)
                 Dim c As String
-                c = Mid(line, iPos, 1)
-                If c = Chr(doubleQuote) Then
+                c = Mid$(line, positionIndex, 1)
+                If c = Chr$(doubleQuote) Then
                     inDoubleQuotes = Not inDoubleQuotes
-                ElseIf (c = Chr(singleQuote)) And (Not inDoubleQuotes) Then
-                    lineTypes(iLine) = iPos
+                ElseIf (c = Chr$(singleQuote)) And (Not inDoubleQuotes) Then
+                    lineTypes(lineIndex) = positionIndex
                     Exit For
                 End If
             Next
         End If
     Next
-    For iLine = cm.CountOfLines To 1 Step -1
-        line = cm.Lines(iLine, 1)
-        Select Case lineTypes(iLine)
+    For lineIndex = cm.CountOfLines To 1 Step -1
+        line = cm.Lines(lineIndex, 1)
+        Select Case lineTypes(lineIndex)
             Case blank
-                cm.DeleteLines iLine
+                cm.DeleteLines lineIndex
             Case fullComment
-                cm.DeleteLines iLine
+                cm.DeleteLines lineIndex
             Case nonComment
             Case Else
-                cm.ReplaceLine iLine, Mid(line, 1, lineTypes(iLine) - 1)
+                cm.ReplaceLine lineIndex, Mid$(line, 1, lineTypes(lineIndex) - 1)
         End Select
     Next
     Erase lineTypes
 End Sub
 
-Private Function IsContinualComment(cm As CodeModule, lineTypes() As Long, ByVal iLine As Long) As Boolean
+Private Function IsContinualComment(ByVal cm As CodeModule, ByRef lineTypes() As Long, ByVal lineIndex As Long) As Boolean
     Const fullComment As Long = -3
-    If iLine = 1 Then 'IIf makes an error
+    If lineIndex = 1 Then 'IIf makes an error
         IsContinualComment = False
     Else
-        IsContinualComment = ((lineTypes(iLine - 1) = fullComment Or 0 < lineTypes(iLine - 1)) And Right(cm.Lines(iLine - 1, 1), 2) = " _")
+        IsContinualComment = ((lineTypes(lineIndex - 1) = fullComment Or 0 < lineTypes(lineIndex - 1)) And Right$(cm.Lines(lineIndex - 1, 1), 2) = " _")
     End If
 End Function
 
-Private Sub CreateInsertsForAccess(ws As Worksheet)
-    Dim table
+Private Sub CreateInsertsForAccess(ByVal ws As Worksheet)
+    Dim table As Variant
     table = ws.UsedRange
 
-    Dim nCols As Long
-    nCols = UBound(table, 2)
+    Dim columnCount As Long
+    columnCount = UBound(table, 2)
 
-    Dim iRow As Long
-    For iRow = 1 To UBound(table)
+    Dim rowIndex As Long
+    For rowIndex = 1 To UBound(table)
         Dim sql As String
-        sql = "CurrentDb.Execute " & Chr(34) & "INSERT INTO " & ws.Name & " VALUES(" & Quote(table(iRow, 1))
-        Dim iCol As Long
-        For iCol = 2 To nCols
-            sql = sql & Chr(44) & Quote(table(iRow, iCol))
+        sql = "CurrentDb.Execute " & Chr$(34) & "INSERT INTO " & ws.name & " VALUES(" & Quote(table(rowIndex, 1))
+        Dim columnIndex As Long
+        For columnIndex = 2 To columnCount
+            sql = sql & Chr$(44) & Quote(table(rowIndex, columnIndex))
         Next
-        sql = sql & ")" & Chr(34)
+        sql = sql & ")" & Chr$(34)
         Debug.Print sql
     Next
 End Sub
 
 Private Function Quote(ByVal s As String) As String
-    Quote = Chr(39) & s & Chr(39)
+    Quote = Chr$(39) & s & Chr$(39)
 End Function
 
 Private Sub PrintVBComponents()
     Dim vbcs As Object
     Set vbcs = CreateObject("System.Collections.ArrayList")
 
-    Dim vbc
+    Dim vbc As Variant
     For Each vbc In ThisWorkbook.VBProject.VBComponents
-        vbcs.Add vbc.Name 'vbc is VBComponent here
+        vbcs.Add vbc.name 'vbc is VBComponent here
     Next
     vbcs.Sort
     For Each vbc In vbcs
@@ -112,23 +111,23 @@ Private Sub PrintVBComponents()
     Next
 End Sub
 
-Private Sub PrintPivotTables(ws As Worksheet)
+Private Sub PrintPivotTables(ByVal ws As Worksheet)
     Dim pt As PivotTable
     For Each pt In ws.PivotTables
-        Debug.Print pt.Name
+        Debug.Print pt.name
     Next
 End Sub
 
-Private Sub PrintCollection(c As Collection)
-    Dim item
+Private Sub PrintCollection(ByVal c As Collection)
+    Dim item As Variant
     For Each item In c
         Debug.Print item
     Next
 End Sub
 
-Private Sub PrintButtonInfo(sht As Worksheet, ByVal buttonName As String)
+Private Sub PrintButtonInfo(ByVal sht As Worksheet, ByVal buttonName As String)
     With sht.Buttons(buttonName)
-        Debug.Print .Name
+        Debug.Print .name
         Debug.Print .Caption
         Debug.Print .OnAction
         Debug.Print .Width
@@ -140,13 +139,13 @@ End Sub
 
 Private Sub Backup()
     Dim backupDir As String
-    backupDir = ActiveWorkbook.Path & "\" & "backup"
+    backupDir = ActiveWorkbook.PATH & "\" & "backup"
 
-    If Dir(backupDir, vbDirectory) = "" Then MkDir backupDir
+    If Dir(backupDir, vbDirectory) = vbNullString Then MkDir backupDir
 
     With New FileSystemObject
         Dim message As String
         message = InputBox("Please enter the commit message.")
-        Shell "cmd /c echo f | xcopy /f /y " & Chr(34) & ActiveWorkbook.FullName & Chr(34) & " " & Chr(34) & ActiveWorkbook.Path & "\backup\" & .GetBaseName(ActiveWorkbook.FullName) & "_" & Format(Now, "yyyymmdd_hhMM") & IIf(Len(message), "_" & Replace(message, " ", "_"), "") & "." & .GetExtensionName(ActiveWorkbook.FullName) & Chr(34)
+        Shell "cmd /c echo f | xcopy /f /y " & Chr$(34) & ActiveWorkbook.FullName & Chr$(34) & " " & Chr$(34) & ActiveWorkbook.PATH & "\backup\" & .GetBaseName(ActiveWorkbook.FullName) & "_" & Format$(Now, "yyyymmdd_hhMM") & IIf(Len(message), "_" & Replace(message, " ", "_"), vbNullString) & "." & .GetExtensionName(ActiveWorkbook.FullName) & Chr$(34)
     End With
 End Sub
