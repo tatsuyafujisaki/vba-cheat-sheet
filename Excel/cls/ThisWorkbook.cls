@@ -32,12 +32,12 @@ Private Sub Workbook_SheetBeforeDoubleClick(ByVal Sh As Object, ByVal Target As 
 End Sub
 
 Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
-    Application.screenUpdating = False
-    Dim ss As Worksheets: Set ss = ThisWorkbook.Worksheets
+    Application.ScreenUpdating = False
+    Dim ss As Sheets: Set ss = ThisWorkbook.Worksheets
     Dim i As Long
     For i = ss.Count To 1 Step -1
         ss(i).Activate
         ss(i).Cells(1, 1).Select
     Next
-    Application.screenUpdating = True
+    Application.ScreenUpdating = True
 End Sub
