@@ -1,16 +1,16 @@
 Option Explicit
 
 Public Function Env(ByVal s As String) As String
-    env = Environ(s)
+    Env = Environ$(s)
 End Function
 
-Public Function GetCSV(r As Range) As String
-    GetCSV = ""
+Public Function GetCSV(ByVal r As Range) As String
+    GetCSV = vbNullString
     Dim c As Range
     For Each c In r
         GetCSV = GetCSV & "," & c.Value
     Next
-    GetCSV = Right(GetCSV, Len(GetCSV) - 1)
+    GetCSV = Right$(GetCSV, Len(GetCSV) - 1)
 End Function
 
 Public Function IsFirstDayOfMonth(ByVal d As Date) As Boolean
@@ -22,11 +22,11 @@ Public Function IsNewYearsDay(ByVal d As Date) As Boolean
 End Function
 
 Public Function GetMondayOfSameWeek(ByVal d As Date) As Date
-    GetMondayOfThisWeek = DateAdd("d", 2 - Weekday(d), d)
+    GetMondayOfSameWeek = DateAdd("d", 2 - Weekday(d), d)
 End Function
 
 Public Function GetFridayOfSameWeek(ByVal d As Date) As Date
-    GetFridayOfThisWeek = DateAdd("d", 6 - Weekday(d), d)
+    GetFridayOfSameWeek = DateAdd("d", 6 - Weekday(d), d)
 End Function
 
 Public Function GetMondayOfLastWeek(ByVal d As Date) As Date
