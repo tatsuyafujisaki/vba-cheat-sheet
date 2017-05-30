@@ -1,7 +1,7 @@
 Option Explicit
 
 ' Microsoft Beefs Up VBScript with Regular Expressions
-' https://msdn.microsoft.com/en-us/library/ms974570.aspx
+' https://msdn.microsoft.com/library/ms974570.aspx
 
 Private Sub Demo()
     With New RegExp 'Microsoft VBScript Regular Expressions x.x
@@ -37,7 +37,7 @@ Private Sub Demo()
         Debug.Print "mc.Count = " & mc.Count 'mc.Count = 5
         Dim i As Long
         For i = 0 To mc.Count - 1
-            Set m = mc.Item(i)
+            Set m = mc.item(i)
             Debug.Print "FirstIndex = " & m.FirstIndex & " Length = " & m.Length & " Value = " & m.Value
         Next
 
