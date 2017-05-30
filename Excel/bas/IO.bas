@@ -16,7 +16,7 @@ Private Function TableToCSV(table) As String
 End Function
 
 Private Function CsvToInserts(ByVal csvPath As String) As Collection
-    Dim sqls As New collection
+    Dim sqls As New Collection
     Dim csv
     csv = ReadCSV(csvPath)
     With New FileSystemObject
@@ -76,7 +76,7 @@ End Sub
 
 Private Function ReadText(ByVal path As String) As String
     With New FileSystemObject
-        With .getFile(path).OpenAsTextStream
+        With .GetFile(path).OpenAsTextStream
             ReadText = GetTailingNewLinesRemoved(GetUnifiedNewLines(.ReadAll))
             .Close
         End With
@@ -123,7 +123,7 @@ Private Function ReadCsvByTextDriver(ByVal dir As String, ByVal file As String, 
     Dim sf As New SchemaFactory
     sf.Init dir, file, hasHeader
 
-    Dim cn As New ADODB.Connection 'Microsoft ActiveX Data Object x.x Library
+    Dim cn As New ADODB.Connection        'Microsoft ActiveX Data Object x.x Library
     cn.Open CONNECTION_STRING & dir
     With New ADODB.Recordset
         .Open "SELECT * FROM " & file, cn
