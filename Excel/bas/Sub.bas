@@ -1,6 +1,6 @@
 Option Explicit
 
-Private Sub ToDate(r As Range)
+Private Sub ToDate(ByVal r As Range)
     Dim SingleCell As Range
     For Each SingleCell In r
         If IsDate(SingleCell.Value) Then SingleCell.Value = CDate(SingleCell.Value)
@@ -8,14 +8,14 @@ Private Sub ToDate(r As Range)
 End Sub
 
 Private Sub MkDirIfNotExist(ByVal path As String)
-    If Dir(path, vbDirectory) = "" Then MkDir path
+    If dir(path, vbDirectory) = vbNullString Then MkDir path
 End Sub
 
 Private Sub Format()
     With Me
         With .PageSetup
-            .PrintArea = Me.UsedRange.address
-            .Orientation = IIf(Me.UsedRange.columns.Count < Me.UsedRange.Rows.Count, xlPortrait, xlLandscape)
+            .PrintArea = Me.UsedRange.Address
+            .Orientation = IIf(Me.UsedRange.columns.Count < Me.UsedRange.rows.Count, xlPortrait, xlLandscape)
             .PaperSize = xlPaperA4
             .Zoom = False 'Needs to be False to enable FitToPagesTall and FitToPagesWide
             .FitToPagesTall = False
@@ -30,10 +30,10 @@ Private Sub Format()
         End With
 
         With .Cells.Font
-            .name = "Segoe UI"
+            .Name = "Segoe UI"
             .Size = 10
-        '    .Rows.AutoFit
-        '    .Columns.AutoFit
+            '    .Rows.AutoFit
+            '    .Columns.AutoFit
         End With
     End With
 End Sub
@@ -49,32 +49,32 @@ Private Sub ExampleOfGetFilename(ByVal filter As String)
     Dim ws As Worksheet: Set ws = wb.Sheets(EQ_SHEET_NAME)
 End Sub
 
-Private Sub CloseWithoutPrompt(wb As Workbook)
+Private Sub CloseWithoutPrompt(ByVal wb As Workbook)
     Application.DisplayAlerts = False
     wb.Close False
     Application.DisplayAlerts = True
 End Sub
 
-Private Sub SaveCloseWithoutPrompt(wb As Workbook, ByVal fileName As String)
+Private Sub SaveCloseWithoutPrompt(ByVal wb As Workbook, ByVal fileName As String)
     Application.DisplayAlerts = False
     wb.Close True, fileName
     Application.DisplayAlerts = True
 End Sub
 
-Private Sub SaveWithoutPrompt(wb As Workbook, ByVal fileName As String)
+Private Sub SaveWithoutPrompt(ByVal wb As Workbook, ByVal fileName As String)
     Application.DisplayAlerts = False
     wb.SaveAs fileName
     Application.DisplayAlerts = True
 End Sub
 
 'Usage: ExportVBComponents Array("Excel1.xlsx", "Module1.bas", "ClassModule1.cls", "Form1.frm")
-Private Sub ExportVBComponents(files As Variant)
+Private Sub ExportVBComponents(ByVal files As Variant)
     Const DESTINATION_WORKBOOK_NAME As String = "production.xls"
     Dim fso As New FileSystemObject
     Dim file As Variant
     With Workbooks.Open(ThisWorkbook.path & "\" & DESTINATION_WORKBOOK_NAME)
         For Each file In files
-            Dim path As String: path = Environ("temp") & "\" & file
+            Dim path As String: path = Environ$("temp") & "\" & file
             Dim module As String: module = fso.GetBaseName(file)
             ThisWorkbook.VBProject.VBComponents(module).Export path
             On Error Resume Next
@@ -96,8 +96,8 @@ Private Sub ImportSheets(ByVal before As String, ByVal after As String, ParamArr
     On Error GoTo 0
     Application.DisplayAlerts = True
     With Workbooks.Open(ThisWorkbook.path & "\" & SOURCE_WORKBOOK_NAME, ReadOnly:=True)
-        If before <> "" Then .Sheets(wsNames).Copy before:=ThisWorkbook.Sheets(before)
-        If after <> "" Then .Sheets(wsNames).Copy after:=ThisWorkbook.Sheets(after)
+        If before <> vbNullString Then .Sheets(wsNames).Copy before:=ThisWorkbook.Sheets(before)
+        If after <> vbNullString Then .Sheets(wsNames).Copy after:=ThisWorkbook.Sheets(after)
         .Close False
     End With
 End Sub
