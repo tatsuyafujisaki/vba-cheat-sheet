@@ -16,9 +16,9 @@ Private Function IsEven(ByVal x As Long) As Boolean
     IsEven = x Mod 2 = 0
 End Function
 
-Private Function AreNumeric(arr) As Boolean
+Private Function AreNumeric(ByVal arr As Variant) As Boolean
     AreNumeric = True
-    Dim v
+    Dim v As Variant
     For Each v In arr
         If Not IsNumeric(v) Then
             AreNumeric = False
@@ -27,16 +27,16 @@ Private Function AreNumeric(arr) As Boolean
     Next
 End Function
 
-Private Function GetMedian(arr)
+Private Function GetMedian(ByVal arr As Variant) As Variant
     Dim al As Object
     Set al = CreateObject("System.Collections.ArrayList")
 
-    Dim n
+    Dim n As Variant
     For Each n In arr
         al.Add CDbl(n)
     Next
 
-    al.Sort 'log(n*Log(n))
+    al.Sort        'log(n*Log(n))
 
     Dim mid As Long
     mid = Fix(al.Count / 2)
@@ -57,7 +57,7 @@ Private Function GetParentFolder(ByVal folder As String) As String
 End Function
 
 'Usage: GetFiles(New Collection, "C:\foo", Array("txt", "sql"))
-Private Function GetFiles(files As Collection, ByVal folder As String, Optional extensions = Null) As Collection
+Private Function GetFiles(ByVal files As Collection, ByVal folder As String, Optional ByVal extensions As Variant = Null) As Collection
     With New FileSystemObject
         Dim subfolder As folder
         For Each subfolder In .GetFolder(folder).SubFolders
@@ -77,9 +77,9 @@ Private Function GetFiles(files As Collection, ByVal folder As String, Optional 
     Set GetFiles = files
 End Function
 
-Private Function InArray(xs, ByVal findMe As String) As Boolean
+Private Function InArray(ByVal xs As Variant, ByVal findMe As String) As Boolean
     InArray = False
-    Dim element
+    Dim element As Variant
     For Each element In xs
         If StrComp(element, findMe, vbTextCompare) = 0 Then
             InArray = True
@@ -89,13 +89,13 @@ Private Function InArray(xs, ByVal findMe As String) As Boolean
 End Function
 
 Private Function IsAbsolutePath(ByVal path As String) As Boolean
-    With New FileSystemObject 'Microsoft Scripting Runtime
+    With New FileSystemObject        'Microsoft Scripting Runtime
         IsAbsolutePath = StrComp(path, .GetAbsolutePathName(path), vbTextCompare) = 0
     End With
 End Function
 
 Private Function GetAbsolutePath(ByVal path As String) As String
-    GetAbsolutePath = IIf(IsAbsolutePath(path), path, ThisWorkbook.path & "\" & path) 'Use CurrentProject.Path for Access 'CurDir is not useful
+    GetAbsolutePath = IIf(IsAbsolutePath(path), path, ThisWorkbook.path & "\" & path)        'Use CurrentProject.Path for Access 'CurDir is not useful
 End Function
 
 Private Function IsProduction() As Boolean
@@ -110,13 +110,13 @@ Private Function GetOSVersion() As String
     Case "Windows (32-bit) NT 5.01"
         GetOSVersion = "Windows XP"
     Case Else
-        Err.Raise 93 'Invalid pattern string (https://support.microsoft.com/kb/146864)
+        Err.Raise 93        'Invalid pattern string (https://support.microsoft.com/kb/146864)
     End Select
 End Function
 
-Private Function IsInvalid(v) As Boolean
+Private Function IsInvalid(ByVal v As Variant) As Boolean
     On Error Resume Next
-    IsInvalid = (v = "")
+    IsInvalid = (v = vbNullString)
     IsInvalid = IsInvalid And (Err.Number = 0)
     On Error GoTo 0
     If IsInvalid Then Exit Function
@@ -137,23 +137,23 @@ Private Function IsInvalid(v) As Boolean
 End Function
 
 Private Function Quote(ByVal s As String) As String
-    Quote = Chr(39) & s & Chr(39)
+    Quote = Chr$(39) & s & Chr$(39)
 End Function
 
 Private Function DoubleQuote(ByVal s As String) As String
-    DoubleQuote = Chr(34) & s & Chr(34)
+    DoubleQuote = Chr$(34) & s & Chr$(34)
 End Function
 
-Private Function QuoteOrNull(ByVal s) As String
-    QuoteOrNull = IIf(IsNull(s), "Null", Chr(39) & s & Chr(39))
+Private Function QuoteOrNull(ByVal s As Variant) As String
+    QuoteOrNull = IIf(IsNull(s), "Null", Chr$(39) & s & Chr$(39))
 End Function
 
 Private Function Bracket(ByVal s As String) As String
-    Bracket = Chr(40) & s & Chr(41)
+    Bracket = Chr$(40) & s & Chr$(41)
 End Function
 
 Private Function GetNumberSignedDate() As String
-    GetNumberSignedDate = Chr(35) & Date & Chr(35)
+    GetNumberSignedDate = Chr$(35) & Date & Chr$(35)
 End Function
 
 Private Function GetGoldenRatio() As Double
@@ -161,7 +161,7 @@ Private Function GetGoldenRatio() As Double
 End Function
 
 Private Function GetDesktopPath() As String
-    With New WshShell 'Windows Script Host Object Model
+    With New WshShell        'Windows Script Host Object Model
         GetDesktopPath = .SpecialFolders("Desktop")
     End With
 End Function
@@ -172,20 +172,20 @@ Private Function SheetExists(ByVal wsName As String) As Boolean
     On Error GoTo 0
 End Function
 
-Private Function GetNameDept()
-    With New WshShell 'Windows Script Host Object Model
-        With .Exec("net user /domain " & Environ("USERNAME"))
+Private Function GetNameDept() As Variant
+    With New WshShell        'Windows Script Host Object Model
+        With .Exec("net user /domain " & Environ$("USERNAME"))
             Dim s As String
             s = .StdOut.ReadAll
         End With
     End With
-    With New RegExp 'Microsoft VBScript Regular Expressions x.x
+    With New RegExp        'Microsoft VBScript Regular Expressions x.x
         .Pattern = "Full Name[ ]+([^\r]+)"
 
         Dim mc As MatchCollection
         Set mc = .Execute(s)
 
-        Dim nd(1)
+        Dim nd As Variant
         nd(0) = mc(0).SubMatches(0)
 
         .Pattern = "Comment[ ]+([^\r]+)"
@@ -203,14 +203,14 @@ Private Function GetCSV(ParamArray pa()) As String
     GetCSV = Join(Array(pa), ",")
 End Function
 
-Private Function GetNonEmptyCellsInColumn(ws As Worksheet, ByVal colIndex As Long) As Range
+Private Function GetNonEmptyCellsInColumn(ByVal ws As Worksheet, ByVal columnIndex As Long) As Range
     Dim col As Range
-    Set col = Intersect(ws.UsedRange, ws.columns(colIndex)) 'CurrentRegion doesn't work with entire column
+    Set col = Intersect(ws.UsedRange, ws.Columns(columnIndex))        'CurrentRegion doesn't work with entire column
 
     Dim singleCell As Range
     For Each singleCell In col
         If Not IsEmpty(singleCell) Then
-            If GetNonEmptyCellsInColumn Is Nothing Then 'IIf make an error
+            If GetNonEmptyCellsInColumn Is Nothing Then        'IIf make an error
                 Set GetNonEmptyCellsInColumn = singleCell
             Else
                 Set GetNonEmptyCellsInColumn = Union(GetNonEmptyCellsInColumn, singleCell)
@@ -228,18 +228,18 @@ Private Function R1C1ToA1(ByVal address As String) As String
 End Function
 
 Private Function IndexToAlphabet(ByVal columnIndex As Long) As String
-    IndexToAlphabet = Replace(Cells(1, columnIndex).address(False, False), "1", "")
+    IndexToAlphabet = Replace(Cells(1, columnIndex).address(False, False), "1", vbNullString)
 End Function
 
-Private Function AlphabetToIndex(ByVal colAlphabet As String) As Long
-    AlphabetToIndex = columns(colAlphabet).Column
+Private Function AlphabetToIndex(ByVal columnAlphabet As String) As Long
+    AlphabetToIndex = Columns(columnAlphabet).Column
 End Function
 
-Private Function AddWorksheet(wb As Workbook, ByVal codeName As String, ByVal name As String, Optional ByVal before As String = Empty, Optional ByVal after As String = Empty) As Worksheet
+Private Function AddWorksheet(ByVal wb As Workbook, ByVal codeName As String, ByVal name As String, Optional ByVal before As String = Empty, Optional ByVal after As String = Empty) As Worksheet
     Dim sh As Worksheet
-    If before <> "" Then
+    If before <> vbNullString Then
         Set sh = wb.Sheets.Add(before:=wb.Sheets(before))
-    ElseIf after <> "" Then
+    ElseIf after <> vbNullString Then
         Set sh = wb.Sheets.Add(after:=wb.Sheets(after))
     Else
         Set sh = wb.Sheets.Add
