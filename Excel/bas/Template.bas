@@ -21,22 +21,22 @@ Private Sub SetCursorToA1()
     ThisWorkbook.Worksheets(1).Activate
 End Sub
 
-Private Function AreDates(xs) As Boolean
+Private Function AreDates(ByVal xs As Variant) As Boolean
     AreDates = True
-    Dim x
+    Dim x As Variant
     For Each x In xs
-        If (x <> "") And Not IsDate(x) Then
+        If (x <> vbNullString) And Not IsDate(x) Then
             AreDates = False
             Exit For
         End If
     Next
 End Function
 
-Private Function AreNumeric(xs) As Boolean
+Private Function AreNumeric(ByVal xs As Variant) As Boolean
     AreNumeric = True
-    Dim x
+    Dim x As Variant
     For Each x In xs
-        If (x <> "") And Not IsNumeric(x) Then
+        If (x <> vbNullString) And Not IsNumeric(x) Then
             AreNumeric = False
             Exit For
         End If
