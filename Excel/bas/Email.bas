@@ -1,10 +1,10 @@
 Option Explicit
 
 Private Sub SendPlainEmail(ByVal from As String, ByVal to1 As String, ByVal cc As String, ByVal bcc As String, ByVal subject As String, ByVal body As String)
-    With New CDO.message 'Microsoft CDO for Windows 2000 Library
+    With New CDO.Message 'Microsoft CDO for Windows 2000 Library
         With .Configuration.Fields
-            .item("http://schemas.microsoft.com/cdo/configuration/sendusing") = cdoSendUsingPort
-            .item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
+            .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = cdoSendUsingPort
+            .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
             .Update
         End With
         .from = from
@@ -17,15 +17,17 @@ Private Sub SendPlainEmail(ByVal from As String, ByVal to1 As String, ByVal cc A
     End With
 End Sub
 
-Private Sub CreatePlainEmail(ByVal to1 As String, ByVal subject As String, ByVal body As String, Optional atts As Collection = Nothing)
+Private Sub CreatePlainEmail(ByVal to1 As String, ByVal subject As String, ByVal body As String, Optional ByVal attachments As Collection = Nothing)
+    Dim attachment As Object
+
     With New Outlook.Application 'Microsoft Outlook x.x Object Library
         With .CreateItem(0)
             .To = to1
             .subject = subject
             .body = body
-            If Not (atts Is Nothing) Then
-                For Each att In atts
-                    .attachments.Add att
+            If Not (attachments Is Nothing) Then
+                For Each attachment In attachments
+                    .attachments.Add attachment
                 Next
             End If
             .Display
@@ -33,17 +35,20 @@ Private Sub CreatePlainEmail(ByVal to1 As String, ByVal subject As String, ByVal
     End With
 End Sub
 
-Private Sub CreateHtmlEmail(ByVal to1 As String, ByVal subject As String, ByVal body As String, Optional atts As Collection = Nothing)
-    Const HEAD As String = "<head><style>p{font:9pt ""Meiryo UI"";}</style></head>"
+Private Sub CreateHtmlEmail(ByVal to1 As String, ByVal subject As String, ByVal body As String, Optional ByVal attachments As Collection = Nothing)
+    Const Head As String = "<head><style>p{font:9pt ""Meiryo UI"";}</style></head>"
+    
+    Dim attachment As Object
+    
     With New Outlook.Application 'Microsoft Outlook x.x Object Library
         With .CreateItem(0)
             .To = to1
             .subject = subject
             .BodyFormat = olFormatHTML
-            .HTMLBody = HEAD & body 'body is like "<p>Hello world!</p>"
-            If Not (atts Is Nothing) Then
-                For Each att In atts
-                    .attachments.Add att
+            .HTMLBody = Head & body 'body is like "<p>Hello world!</p>"
+            If Not (attachments Is Nothing) Then
+                For Each attachment In attachments
+                    .attachments.Add attachment
                 Next
             End If
             .Display
