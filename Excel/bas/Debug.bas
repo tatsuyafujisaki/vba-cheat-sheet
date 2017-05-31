@@ -137,6 +137,18 @@ Private Sub PrintButtonInfo(ByVal sht As Worksheet, ByVal buttonName As String)
     End With
 End Sub
 
+Private Sub PrintAddins()
+    Dim addin As addin
+    
+    For Each addin In Application.AddIns2
+        Debug.Print addin.Name
+        Debug.Print addin.Path
+        Debug.Print addin.FullName
+        Debug.Print addin.Installed
+        Debug.Print
+    Next
+End Sub
+
 Private Sub Backup()
     Dim backupDir As String
     backupDir = ActiveWorkbook.PATH & "\" & "backup"
