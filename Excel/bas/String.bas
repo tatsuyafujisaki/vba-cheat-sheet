@@ -1,9 +1,5 @@
 Option Explicit
 
-Private Function Clean(ByVal s As String) As String
-    Clean = Trim$(Replace(Replace(Replace(s, vbCr, vbNullString), vbLf, vbNullString), vbCrLf, vbNullString))
-End Function
-
 Private Sub Printf(ByVal format As String, ParamArray args())
     Dim i As Long
     For i = 0 To UBound(args)
