@@ -227,14 +227,6 @@ Private Function R1C1ToA1(ByVal address As String) As String
     R1C1ToA1 = Application.ConvertFormula(address, xlR1C1, xlA1, xlAbsolute, Sheets(1).Cells(1, 1))
 End Function
 
-Private Function IndexToAlphabet(ByVal columnIndex As Long) As String
-    IndexToAlphabet = Replace(Cells(1, columnIndex).address(False, False), "1", vbNullString)
-End Function
-
-Private Function AlphabetToIndex(ByVal columnAlphabet As String) As Long
-    AlphabetToIndex = Columns(columnAlphabet).Column
-End Function
-
 Private Function AddWorksheet(ByVal wb As Workbook, ByVal codeName As String, ByVal name As String, Optional ByVal before As String = Empty, Optional ByVal after As String = Empty) As Worksheet
     Dim sh As Worksheet
     If before <> vbNullString Then
