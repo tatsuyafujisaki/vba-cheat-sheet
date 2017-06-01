@@ -49,24 +49,6 @@ Private Sub ExampleOfGetFilename(ByVal filter As String)
     Dim ws As Worksheet: Set ws = wb.Sheets(EQ_SHEET_NAME)
 End Sub
 
-Private Sub CloseWithoutPrompt(ByVal wb As Workbook)
-    Application.DisplayAlerts = False
-    wb.Close False
-    Application.DisplayAlerts = True
-End Sub
-
-Private Sub SaveCloseWithoutPrompt(ByVal wb As Workbook, ByVal fileName As String)
-    Application.DisplayAlerts = False
-    wb.Close True, fileName
-    Application.DisplayAlerts = True
-End Sub
-
-Private Sub SaveWithoutPrompt(ByVal wb As Workbook, ByVal fileName As String)
-    Application.DisplayAlerts = False
-    wb.SaveAs fileName
-    Application.DisplayAlerts = True
-End Sub
-
 'Usage: ExportVBComponents Array("Excel1.xlsx", "Module1.bas", "ClassModule1.cls", "Form1.frm")
 Private Sub ExportVBComponents(ByVal files As Variant)
     Const DESTINATION_WORKBOOK_NAME As String = "production.xls"
