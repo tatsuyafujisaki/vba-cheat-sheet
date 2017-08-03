@@ -1,2 +1,2 @@
 ###### Note
-* Use Me rather than ThisWorkbook
+* Use Me rather than ThisWorkbook.
