@@ -23,10 +23,10 @@ Private Sub Main()
 End Sub
 
 Private Sub RenameShapeToAmendment(ByVal s As Shape)
-        If s.Name = "Amendment" Or s.Name = "Rectangle 5" Or s.Name = "Rectangle 12" Then
-            s.Name = "Amendment"
-            s.Fill.ForeColor = RGB(255, 255, 0)
-        End If
+    If s.Name = "Amendment" Or s.Name = "Rectangle 5" Or s.Name = "Rectangle 12" Then
+        s.Name = "Amendment"
+        s.Fill.ForeColor = RGB(255, 255, 0)
+    End If
 End Sub
 
 Private Sub PrintPageSetup(ByVal d As Document)
