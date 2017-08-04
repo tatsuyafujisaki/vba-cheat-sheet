@@ -7,13 +7,21 @@ Private Sub Document_Open()
 End Sub
 
 Private Sub MarkShapes()
-    Dim s As Shape
-
+    Dim shape As shape
+    Dim hf As HeaderFooter
+    
     Me.ActiveWindow.ActivePane.View.SeekView = Word.WdSeekView.wdSeekCurrentPageFooter
-
-    For Each s In Me.Shapes
-        s.Select
-        Selection.TypeText s.Name
+    
+    ' Counterintuitively, Sections(1) returns shapes in all sections.
+    ' Counterintuitively, the following iteration through Headers returns shapes not only in the header but also in the footer too.
+    For Each shape In Me.Sections(1).Headers(wdHeaderFooterPrimary).Shapes
+        shape.Select
+        Selection.TypeText "Shape in HeaderFooter > " & shape.Name
+    Next
+    
+    For Each shape In Me.Shapes
+        shape.Select
+        Selection.TypeText "Shape in Body > " & shape.Name
     Next
 End Sub
 
