@@ -7,7 +7,7 @@ Private Sub Document_Open()
 End Sub
 
 Private Sub MarkShapes()
-    Dim shape As shape
+    Dim shape As Shape
     Dim hf As HeaderFooter
     
     Me.ActiveWindow.ActivePane.View.SeekView = Word.WdSeekView.wdSeekCurrentPageFooter
