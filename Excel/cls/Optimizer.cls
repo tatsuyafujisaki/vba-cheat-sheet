@@ -7,8 +7,8 @@ Private calculation As Long
 
 Private Sub Class_Initialize()
     With Application
-        screenUpdating = .screenUpdating
-        .screenUpdating = False
+        screenUpdating = .ScreenUpdating
+        .ScreenUpdating = False
         
         displayStatusBar = .displayStatusBar
         .displayStatusBar = False
@@ -16,17 +16,17 @@ Private Sub Class_Initialize()
         enableEvent = .EnableEvents
         .EnableEvents = False
 
-        calculation = .calculation
-        .calculation = xlCalculationManual
+        calculation = .Calculation
+        .Calculation = xlCalculationManual
     End With
 End Sub
 
 Private Sub Class_Terminate()
     With Application
-        .calculation = calculation
+        .Calculation = calculation
         .EnableEvents = enableEvent
-        .displayStatusBar = displayStatusBar
-        .screenUpdating = screenUpdating
+        .DisplayStatusBar = displayStatusBar
+        .ScreenUpdating = screenUpdating
     End With
 End Sub
 
