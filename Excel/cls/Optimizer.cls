@@ -23,7 +23,7 @@ End Sub
 
 Private Sub Class_Terminate()
     With Application
-        .calculation = caluclation
+        .calculation = calculation
         .EnableEvents = enableEvent
         .displayStatusBar = displayStatusBar
         .screenUpdating = screenUpdating
