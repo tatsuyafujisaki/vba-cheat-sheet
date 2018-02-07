@@ -9,10 +9,10 @@ Private Sub Class_Initialize()
     With Application
         screenUpdating = .ScreenUpdating
         .ScreenUpdating = True
-        
-        displayStatusBar = .DisplayStatusBar
-        .DisplayStatusBar = True
-        
+
+        displayStatusBar = .displayStatusBar
+        .displayStatusBar = True
+
         enableEvent = .EnableEvents
         .EnableEvents = True
 

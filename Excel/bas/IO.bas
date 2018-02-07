@@ -1,5 +1,11 @@
 Option Explicit
 
+Private Function GetDrivePath(ByVal driveLetter As String) As String
+    With New FileSystemObject
+        GetDrivePath = .GetDrive(driveLtter).ShareName
+    End With
+End Function
+
 Private Function TableToCSV(table) As String
     TableToCSV = ""
     Dim bounds
