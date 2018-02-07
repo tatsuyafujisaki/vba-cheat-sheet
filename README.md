@@ -1,4 +1,6 @@
 # Best practices
+* Specify `ByVal`. The default is `ByRef`.
+* Specify `Private`. The default is `Public`.
 * A rather than B
   * Use square brackets to reference cells.
   * Use `vbNewLine` rather than `vbCrLf`.
