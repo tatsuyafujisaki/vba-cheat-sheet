@@ -13,12 +13,6 @@ Sub ToDate(ByVal r As Range)
     Next
 End Sub
 
-Sub MkDirIfNotExist(ByVal path As String)
-    If Dir$(path, vbDirectory) = vbNullString Then
-        MkDir path
-    End If
-End Sub
-
 Private Sub ExampleOfGetFilename(ByVal filter As String)
     'e.g. filter = "Templates (*.xlt), *.xlt"
     Dim fileName As String

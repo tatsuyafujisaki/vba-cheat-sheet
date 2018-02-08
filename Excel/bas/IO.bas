@@ -1,6 +1,12 @@
 Option Explicit
 
-Private Function GetDrivePath(ByVal driveLetter As String) As String
+Sub MkDirIfNotExist(ByVal path As String)
+    If Dir$(path, vbDirectory) = vbNullString Then
+        MkDir path
+    End If
+End Sub
+
+Function GetDrivePath(ByVal driveLetter As String) As String
     With New FileSystemObject
         GetDrivePath = .GetDrive(driveLtter).ShareName
     End With
