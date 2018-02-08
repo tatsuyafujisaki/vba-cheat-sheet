@@ -9,35 +9,42 @@ Private Sub Workbook_BeforeClose(Cancel As Boolean)
 End Sub
 
 Private Sub Log(ByVal s As String)
-    Const PATH As String = "C:\temp\log.txt"
-    Dim fn As Integer
-    fn = FreeFile
-    Open PATH For Append As #fn
-    Print #fn, Join(Array(Format$(Now, "YYYY-MM-DD_hh-mm"), Environ$("USERNAME"), Environ$("COMPUTERNAME"), s), ",")
-    Close fn
+    Const Path As String = "C:\Foo.log"
+
+    Dim fileNumber As Integer
+    fileNumber = FreeFile
+
+    Open Path For Append As #fileNumber
+    Print #fileNumber, Join$(Array(Format$(Now, "yyyy-mm-dd hh:mm"), Environ$("ComputerName"), Application.UserName, s), "|")
+    Close fileNumber
 End Sub
 
+' Show the name of a double-clicked range
 Private Sub Workbook_SheetBeforeDoubleClick(ByVal Sh As Object, ByVal Target As Range, Cancel As Boolean)
-    ' Pop up a name of a double-clicked range
-    Dim ns As String
-    Dim n As Name
-    For Each n In ThisWorkbook.Names
-        Dim v As Variant: v = Split(n.Value, "!")
-        If Not (Intersect(Target, ThisWorkbook.Worksheets(Replace(v(0), "=", vbNullString)).Range(v(1))) Is Nothing) Then
-            ns = ns + n.Name + vbCrLf
+    Dim names As String
+    Dim name1 As Name
+
+    For Each name1 In Me.names
+        Dim v As Variant
+        v = Split(name1.Value, "!")
+        
+        If Not (Intersect(Target, Me.Worksheets(Replace$(v(0), "=", vbNullString)).Range(v(1))) Is Nothing) Then
+            names = names + name1.Name + vbNewLine
         End If
-        ThisWorkbook.Worksheets(Replace(v(0), "=", vbNullString)).Range(v(1)).Interior.ColorIndex = 6
+        Me.Worksheets(Replace$(v(0), "=", vbNullString)).Range(v(1)).Interior.ColorIndex = 6
     Next
-    MsgBox ns
+    MsgBox names
 End Sub
 
 Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
-    Application.ScreenUpdating = False
-    Dim ss As Sheets: Set ss = ThisWorkbook.Worksheets
-    Dim i As Long
-    For i = ss.Count To 1 Step -1
-        ss(i).Activate
-        ss(i).Cells(1, 1).Select
-    Next
-    Application.ScreenUpdating = True
+    Dim o As Optimizer
+    Set o = New Optimizer
+
+    With Me
+        Dim i As Long
+        For i = Me.Worksheets.Count To 1 Step -1
+            Me.Worksheets(i).Activate
+            Me.Worksheets(i).Cells(1, 1).Select
+        Next
+    End With
 End Sub
