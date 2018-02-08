@@ -1,3 +1,6 @@
+# Note
+* `Environ$("ComputerName")` gets the computer name.
+
 # Best practices
 * Specify `ByVal` to override the default `ByRef`.
 * Specify `Private` to override the default is `Public`.
@@ -16,7 +19,7 @@ $|String
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
   * Use `Application.PathSeparator` rather than `\`.
-  * Use `Me` rather than `ThisWorkbook` in `ThisWorkbook`.
+  * In`ThisWorkbook`, use `Me` rather than `ThisWorkbook`.
   * Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
   * Use `Addins2` rather than `Addins`.
     * `Addins2` = `Addins` + "addins currently open".
