@@ -1,15 +1,27 @@
 # Best practices
-* Specify `ByVal`. The default is `ByRef`.
-* Specify `Private`. The default is `Public`.
+* Specify `ByVal` to override the default `ByRef`.
+* Specify `Private` to override the default is `Public`.
+* Use square brackets to reference cells.
+* Append a type-declaration character to the end of each function name.
+
+Type-declaration character|Type
+---|---
+@|Currency
+#|Double
+%|Integer
+&|Long
+!|Single
+$|String
 * A rather than B
-  * Use square brackets to reference cells.
   * Use `vbNewLine` rather than `vbCrLf`.
+  * Use `vbNullString` rather than `""`.
+  * Use `Application.PathSeparator` rather than `\`.
+  * Use `Me` rather than `ThisWorkbook` in `ThisWorkbook`.
+  * Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
   * Use `Addins2` rather than `Addins`.
     * `Addins2` = `Addins` + "addins currently open".
   * Use `Range.Value2` rather than `Range.Value`.
     * `Value2` returns `Currency` and `Date` as double (i.e. without formatting).
-  * Use a code name rather than a name to reference a worksheet.
-    * e.g. Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
 
 # References
 * [Language reference VBA](https://msdn.microsoft.com/en-us/vba/vba-language-reference)
