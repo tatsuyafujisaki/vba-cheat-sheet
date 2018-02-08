@@ -11,5 +11,5 @@ Private Sub Class_Terminate()
 End Sub
 
 ' Usage
-' Dim t As Timer
-' Set t = New Timer
+' Dim p As Profiler
+' Set p = New Profiler
