@@ -9,9 +9,8 @@ Public Function Join(ByVal dir As String) As path
     End With
 End Function
 
-' Usasge
-' Dim p As Path
-' Set p = New Path
+' Usage
+' Dim p As New Path
 '
 ' The following prints C:\Foo\Bar
 ' Debug.Print p.Join("C:").Join("Foo").Join("Bar").Value
