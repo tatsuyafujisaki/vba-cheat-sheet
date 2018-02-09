@@ -35,6 +35,7 @@ $|String
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
   * Use `Application.PathSeparator` rather than `\`.
+  * Use `Worksheet` or `chart` ratehr than their parent `Sheet`.
   * In`ThisWorkbook`, use `Me` rather than `ThisWorkbook`.
   * Use `Addins2` rather than `Addins`.
     * `Addins2` = `Addins` + "addins currently open".
