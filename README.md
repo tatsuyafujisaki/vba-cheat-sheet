@@ -1,15 +1,14 @@
 # Note
 * `Environ$("ComputerName")` gets the computer name.
-* Access level if not explicitly specified
 
+## Access levels if not explicitly specified
 Keyword|Access level if not explicitly specified
 ---|---
 Const|Private
 Procedure|Public
 Function|Public
 
-* Type-declaration character
-
+## Type-declaration characters
 Type-declaration character|Type
 ---|---
 @|Currency
