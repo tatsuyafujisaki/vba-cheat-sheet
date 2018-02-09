@@ -8,11 +8,7 @@ Const|Private
 Procedure|Public
 Function|Public
 
-# Best practices
-* Specify `ByVal` to override the default `ByRef`.
-* Omit `Private` to override the default is `Public`.
-* Use square brackets to reference cells.
-* Append a type-declaration character to the end of each function name.
+* Type-declaration character
 
 Type-declaration character|Type
 ---|---
@@ -22,12 +18,25 @@ Type-declaration character|Type
 &|Long
 !|Single
 $|String
+
+# Best practices
+
+## Best practices for performance
+* Append a type-declaration character to the end of each function name.
 * A rather than B
+  * Use `ByVal` rather than `ByRef` 
+  * Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
+
+## Best practices for maintainability
+* Don't specify default access levels.
+* Use square brackets to reference cells.
+
+* A rather than B
+  * Use `Private` rather than `Public`.
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
   * Use `Application.PathSeparator` rather than `\`.
   * In`ThisWorkbook`, use `Me` rather than `ThisWorkbook`.
-  * Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
   * Use `Addins2` rather than `Addins`.
     * `Addins2` = `Addins` + "addins currently open".
   * Use `Range.Value2` rather than `Range.Value`.
