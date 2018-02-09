@@ -1,9 +1,16 @@
 # Note
 * `Environ$("ComputerName")` gets the computer name.
+* Access level if not explicitly specified
+
+Keyword|Access level if not explicitly specified
+---|---
+Const|Private
+Procedure|Public
+Function|Public
 
 # Best practices
 * Specify `ByVal` to override the default `ByRef`.
-* Specify `Private` to override the default is `Public`.
+* Omit `Private` to override the default is `Public`.
 * Use square brackets to reference cells.
 * Append a type-declaration character to the end of each function name.
 
