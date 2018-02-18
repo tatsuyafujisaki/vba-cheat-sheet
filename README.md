@@ -1,5 +1,6 @@
 # Note
-* `Environ$("ComputerName")` gets the computer name.
+* `Environ$("ComputerName")` returns the computer name.
+* `Worksheet1.PageSetup` is invalid if no printer is available.
 
 ## Access levels if not explicitly specified
 Keyword|Access level if not explicitly specified
