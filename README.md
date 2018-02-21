@@ -38,7 +38,7 @@ $|String
   Set o = New Object1
   ```
   * Minimize the dots. Cache frequently used properties in variables.
-  * Use LongLong rather than long or Integer in 64-bit Office.
+  * Use LongLong rather than Long or Integer in 64-bit Office.
     * Use Long in 32-bit Office because LongLong is unavailable in it.
     
 ## Best practices for maintainability
