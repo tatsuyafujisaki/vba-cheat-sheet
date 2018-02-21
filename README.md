@@ -3,7 +3,7 @@
 * `Worksheet1.PageSetup` is invalid if no printer is available.
 
 ## Default access levels
-Keyword|Access level if not explicitly specified
+Keyword|Access level if omitted
 ---|---
 Const|Private
 Procedure|Public
