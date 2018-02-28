@@ -46,8 +46,8 @@ $|String
 * Use square brackets to reference cells.
 
 * A rather than B
-  * Use `Cells(columnAlphabet, rowIndex)` rather than `Range(columnAlphabet & rowIndex)` to refer to a single cell using variables.
-  * Use `Range(singleAddress1, singleAddress2)` rather than `Range(singleAddress1 & ":" & singleAddress2)` to refer to multiple cells using variables.
+  * Use `Cells(columnAlphabet, rowIndex)` rather than `Range(columnAlphabet & rowIndex)` when referring to a single cell using variables.
+  * Use `Range(singleAddress1, singleAddress2)` rather than `Range(singleAddress1 & ":" & singleAddress2)` when referring to multiple cells using variables.
   * Use `Private` rather than `Public`.
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
