@@ -42,10 +42,12 @@ $|String
     * Use Long in 32-bit Office because LongLong is unavailable in it.
     
 ## Best practices for maintainability
-* Don't specify default access levels.
+* Don't bother to specify default access levels.
 * Use square brackets to reference cells.
 
 * A rather than B
+  * Use `Cells(columnAlphabet, rowIndex)` rather than `Range(columnAlphabet & rowIndex)` to refer to a single cell using variables.
+  * Use `Range(singleAddress1, singleAddress2)` rather than `Range(singleAddress1 & ":" & singleAddress2)` to refer to multiple cells using variables.
   * Use `Private` rather than `Public`.
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
