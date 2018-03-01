@@ -24,6 +24,8 @@ $|String
 ## Best practices for performance
 * Append a type-declaration character to the end of each function name.
 * A rather than B
+  * Use `Cells(rowIndex, columnAlphabet)` rather than `Range(columnAlphabet & rowIndex)` when referring to a single cell using variables.
+  * Use `Range(singleAddress1, singleAddress2)` rather than `Range(singleAddress1 & ":" & singleAddress2)` when referring to multiple cells using variables.
   * Use `ByVal` rather than `ByRef` 
   * Use `ThisWorkbook.Sheet1` rather than `ThisWorkbook.Worksheets("Sheet1")`.
   * Use `Dictionary` rather than `Collection`.
@@ -46,8 +48,6 @@ $|String
 * Use square brackets to reference cells.
 
 * A rather than B
-  * Use `Cells(columnAlphabet, rowIndex)` rather than `Range(columnAlphabet & rowIndex)` when referring to a single cell using variables.
-  * Use `Range(singleAddress1, singleAddress2)` rather than `Range(singleAddress1 & ":" & singleAddress2)` when referring to multiple cells using variables.
   * Use `Private` rather than `Public`.
   * Use `vbNewLine` rather than `vbCrLf`.
   * Use `vbNullString` rather than `""`.
