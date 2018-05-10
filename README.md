@@ -73,3 +73,5 @@ $|String
   * [Statements](https://msdn.microsoft.com/en-us/vba/language-reference-vba/articles/statements)
     * [Call Statement](https://msdn.microsoft.com/en-us/vba/language-reference-vba/articles/call-statement)
   * [Error Messages](https://msdn.microsoft.com/en-us/vba/language-reference-vba/articles/error-messages)
+  * [Events](https://msdn.microsoft.com/en-us/vba/language-reference-vba/articles/events-object-vba-add-in-object-model)
+  * [WithEvents](https://msdn.microsoft.com/en-us/vba/language-reference-vba/articles/withevents-keyword)
