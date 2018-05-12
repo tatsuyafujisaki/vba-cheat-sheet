@@ -1,6 +1,6 @@
 # Note
-* `Environ$("ComputerName")` returns the computer name.
-* `Worksheet1.PageSetup` is invalid if no printer is available.
+* `Environ$("EnvironmentVariable1")` returns the value of EnvironmentVariable1.
+* `Worksheet1.PageSetup` throws an error if no printer is available.
 
 ## Default access levels
 Keyword|Access level if omitted
