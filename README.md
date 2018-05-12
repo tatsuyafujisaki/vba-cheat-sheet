@@ -44,7 +44,8 @@ $|String
     * Use Long in 32-bit Office because LongLong is unavailable in it.
     
 ## Best practices for maintainability
-* Don't bother to specify default access levels.
+* Don't bother to specify default access level.
+* Don't pass a Worksheet to a function if the function takes a Range because you can get the Worksheet from `Range.Worksheet`.
 * Use square brackets to reference cells.
 
 * A rather than B
