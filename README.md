@@ -2,6 +2,7 @@
 * `Environ$("EnvironmentVariable1")` returns the value of EnvironmentVariable1.
 * `Worksheet1.PageSetup` throws an error if no printer is available.
   * [You cannot use page setup properties in Excel if no printers were installed @ Microsoft](https://support.microsoft.com/en-us/help/291298/you-cannot-use-page-setup-properties-in-excel-if-no-printers-were-inst)
+* There is no way to bulk-insert records via VBA.
 
 ## Default access levels
 Keyword|Access level if omitted
