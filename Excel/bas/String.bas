@@ -56,15 +56,3 @@ Private Function LRTruncate(ByVal s As String, ByVal n As Long) As String
     'The function name LRTrim is a compromise because "Trim" is reserved
     LRTruncate = Mid$(s, n + 1, Len(s) - 2 * n) 'Delete first n characters
 End Function
-
-Private Function YYYYMMDDToDate(ByVal yyyymmdd As String) As Date
-    YYYYMMDDToDate = DateSerial(Left$(yyyymmdd, 4), Mid$(yyyymmdd, 5, 2), Right$(yyyymmdd, 2))
-End Function
-
-Private Function DateToYYYYMMDD(ByVal date1 As Date) As String
-    DateToYYYYMMDD = format(date1, "yyyymmdd")
-End Function
-
-Private Function DateToYYYYMMDD_HHMM(ByVal dt As Date) As String
-    DateToYYYYMMDD_HHMM = format(dt, "yyyymmdd_hhmm")
-End Function
