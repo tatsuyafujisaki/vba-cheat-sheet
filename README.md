@@ -1,7 +1,6 @@
 # Note
 * `Worksheet1.PageSetup` throws an error if no printer is available.
   * [You cannot use page setup properties in Excel if no printers were installed @ Microsoft](https://support.microsoft.com/en-us/help/291298/you-cannot-use-page-setup-properties-in-excel-if-no-printers-were-inst)
-* There is no way to bulk-insert records via VBA.
 
 ## Default access levels
 Keyword|Access level if omitted
@@ -25,6 +24,10 @@ $|String
 Environ$("USERNAME")
 Environ$("Computername")
 ```
+
+## SQL Server
+* There is no way to bulk-insert records via VBA.
+* https://docs.microsoft.com/en-us/sql/ado/guide/appendixes/appendix-a-providers
 
 # Best practices
 
