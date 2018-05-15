@@ -1,7 +1,7 @@
 Option Compare Database
 Option Explicit
 
-Private Function TableExists(ByVal name As String) As Boolean
+Function TableExists(ByVal name As String) As Boolean
     TableExists = False
     Dim td As DAO.TableDef
     For Each td In CurrentDb.TableDefs
@@ -12,7 +12,7 @@ Private Function TableExists(ByVal name As String) As Boolean
     Next
 End Function
 
-Private Function QueryExists(ByVal name As String) As Boolean
+Function QueryExists(ByVal name As String) As Boolean
     QueryExists = False
     Dim qd As DAO.QueryDef
     For Each qd In CurrentDb.QueryDefs
@@ -23,7 +23,7 @@ Private Function QueryExists(ByVal name As String) As Boolean
     Next
 End Function
 
-Private Function FormExists(ByVal name As String) As Boolean
+Function FormExists(ByVal name As String) As Boolean
     FormExists = False
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllForms
@@ -34,7 +34,7 @@ Private Function FormExists(ByVal name As String) As Boolean
     Next
 End Function
 
-Private Function ReportExists(ByVal name As String) As Boolean
+Function ReportExists(ByVal name As String) As Boolean
     ReportExists = False
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllReports
@@ -45,7 +45,7 @@ Private Function ReportExists(ByVal name As String) As Boolean
     Next
 End Function
 
-Private Function MacroExists(ByVal name As String) As Boolean
+Function MacroExists(ByVal name As String) As Boolean
     MacroExists = False
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllMacros
@@ -56,7 +56,7 @@ Private Function MacroExists(ByVal name As String) As Boolean
     Next
 End Function
 
-Private Function ModuleExists(ByVal name As String) As Boolean
+Function ModuleExists(ByVal name As String) As Boolean
     ModuleExists = False
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllModules
