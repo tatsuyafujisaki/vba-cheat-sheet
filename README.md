@@ -26,7 +26,6 @@ Environ$("Computername")
 ```
 
 ## SQL Server
-* There is no way to bulk-insert records via VBA.
 * https://docs.microsoft.com/en-us/sql/ado/guide/appendixes/appendix-a-providers
 
 # Best practices
