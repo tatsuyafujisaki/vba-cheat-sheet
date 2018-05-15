@@ -1,7 +1,7 @@
 Option Compare Database
 Option Explicit
 
-Private Sub TransferObjects()
+Sub TransferObjects()
     Dim ao As AccessObject
     For Each ao In CurrentProject.AllForms
         TransferObject acForm, ao.name
@@ -26,7 +26,7 @@ Private Sub TransferObjects()
     MsgBox "Done!"
 End Sub
 
-Private Sub TransferObject(ByVal objectType As AcObjectType, ByVal name As String)
+Sub TransferObject(ByVal objectType As AcObjectType, ByVal name As String)
     Dim exportTo As String: exportTo = CurrentProject.path & "\" & "Database1.accdb"
     DoCmd.TransferDatabase acExport, "Microsoft Access", exportTo, objectType, name, name
 End Sub
