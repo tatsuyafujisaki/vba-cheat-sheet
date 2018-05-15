@@ -25,8 +25,10 @@ Environ$("USERNAME")
 Environ$("Computername")
 ```
 
-## SQL Server
+## ADO (ActiveX Data Objects)
 * https://docs.microsoft.com/en-us/sql/ado/guide/appendixes/appendix-a-providers
+* https://docs.microsoft.com/en-us/sql/ado/reference/ado-api/updatebatch-and-cancelbatch-methods-example-vb
+* https://docs.microsoft.com/en-us/sql/ado/guide/data/sending-the-updates-updatebatch-method
 
 # Best practices
 
@@ -68,6 +70,7 @@ Environ$("Computername")
     * `Addins2` = `Addins` + "addins currently open".
   * Use `Range.Value2` rather than `Range.Value`.
     * `Value2` returns `Currency` and `Date` as double (i.e. without formatting).
+  * Use `Recordset!Field1` rather than `Recordset.Fields("Field1").Value`.
 
 ## References
 [Visual Basic Concepts: Optimizing for Speed](https://msdn.microsoft.com/en-us/library/aa263514.aspx)
