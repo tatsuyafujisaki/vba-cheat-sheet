@@ -1,12 +1,12 @@
 Option Compare Database
 Option Explicit
 
-Private Sub PrintRecordset(rs As Recordset)
+Sub PrintRecordset(rs As Recordset)
     Debug.Print GetFieldNames(rs)
     Debug.Print GetRows(rs)
 End Sub
 
-Private Function GetRows(rs As DAO.Recordset) As String
+Function GetRows(rs As DAO.Recordset) As String
     GetRows = ""
     With rs
         Dim table As Variant
@@ -23,7 +23,7 @@ Private Function GetRows(rs As DAO.Recordset) As String
     End With
 End Function
 
-Private Function GetFieldNames(rs As DAO.Recordset) As String
+Function GetFieldNames(rs As DAO.Recordset) As String
     With rs
         GetFieldNames = .Fields(0).name
         Dim iCol As Long
@@ -33,7 +33,7 @@ Private Function GetFieldNames(rs As DAO.Recordset) As String
     End With
 End Function
 
-Private Function GetRecordCount(rs As DAO.Recordset) As Long
+Function GetRecordCount(rs As DAO.Recordset) As Long
     With rs
         .MoveLast
         GetRecordCount = .RecordCount
@@ -41,7 +41,7 @@ Private Function GetRecordCount(rs As DAO.Recordset) As Long
     End With
 End Function
 
-Private Sub PrintVBComponents()
+Sub PrintVBComponents()
     Dim vbcs As Object
     Set vbcs = CreateObject("System.Collections.ArrayList")
     Dim vbc As Variant
