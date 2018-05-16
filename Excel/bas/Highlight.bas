@@ -1,6 +1,6 @@
 Option Explicit
 
-Private Sub CompareTwoSheets()
+Sub CompareTwoSheets()
     Dim sourceWs1 As Worksheet
     Set sourceWs1 = ThisWorkbook.Worksheets("Source1")
 
@@ -36,7 +36,7 @@ Private Sub CompareTwoSheets()
     Next
 End Sub
 
-Private Sub HighlightNamedRange()
+Sub HighlightNamedRange()
     Dim n As Name
     For Each n In ThisWorkbook.Names
         Dim v As Variant
@@ -45,7 +45,7 @@ Private Sub HighlightNamedRange()
     Next
 End Sub
 
-Private Sub HighlightTrueFalse(ByVal r As Range)
+Sub HighlightTrueFalse(ByVal r As Range)
     With r.FormatConditions
         .Delete
         With .Add(xlCellValue, xlEqual, "TRUE")
@@ -61,7 +61,7 @@ Private Sub HighlightTrueFalse(ByVal r As Range)
     End With
 End Sub
 
-Private Sub HighlightDuplicates(ByVal ws As Worksheet)
+Sub HighlightDuplicates(ByVal ws As Worksheet)
     Const columnIndex As Long = 1
     Dim col As Range
     Set col = Intersect(ws.UsedRange, ws.Columns(columnIndex).EntireColumn)
@@ -72,7 +72,7 @@ Private Sub HighlightDuplicates(ByVal ws As Worksheet)
     Next
 End Sub
 
-Private Sub HighlightMatched(ByVal ws As Worksheet)
+Sub HighlightMatched(ByVal ws As Worksheet)
     Const sourceColumn1Index As Long = 1
     Const sourceColumn2Index As Long = 2
     ws.UsedRange.Interior.ColorIndex = xlColorIndexNone
@@ -88,7 +88,7 @@ Private Sub HighlightMatched(ByVal ws As Worksheet)
     HighlightMatchedCallback col2, col1.Value
 End Sub
 
-Private Sub HighlightMatchedCallback(ByVal col1 As Range, ByVal col2 As Variant)
+Sub HighlightMatchedCallback(ByVal col1 As Range, ByVal col2 As Variant)
     Dim singleCell As Range
     For Each singleCell In col1
         If Not IsEmpty(singleCell.Value) Then
@@ -100,7 +100,7 @@ Private Sub HighlightMatchedCallback(ByVal col1 As Range, ByVal col2 As Variant)
     Next
 End Sub
 
-Private Sub FindMatched(ByVal ws As Worksheet)
+Sub FindMatched(ByVal ws As Worksheet)
     Const sourceColumn1Index As Long = 1
     Const sourceColumn2Index As Long = 2
     Const destinationColumnIndex As Long = 3
@@ -121,7 +121,7 @@ Private Sub FindMatched(ByVal ws As Worksheet)
     PasteDictionary matched, ws.Columns(destinationColumnIndex)
 End Sub
 
-Private Sub FindMatchedCallback(ByVal d As Dictionary, ByVal col1 As Range, ByVal col2 As Variant)
+Sub FindMatchedCallback(ByVal d As Dictionary, ByVal col1 As Range, ByVal col2 As Variant)
     Dim singleCell As Range
     For Each singleCell In col1
         If Not IsEmpty(singleCell.Value) Then
@@ -133,7 +133,7 @@ Private Sub FindMatchedCallback(ByVal d As Dictionary, ByVal col1 As Range, ByVa
     Next
 End Sub
 
-Private Sub PasteDictionary(ByVal d As Dictionary, ByVal r As Range)
+Sub PasteDictionary(ByVal d As Dictionary, ByVal r As Range)
     ReDim table(d.Count, 0)
     Dim i As Long
     For i = 0 To d.Count - 1
@@ -143,17 +143,17 @@ Private Sub PasteDictionary(ByVal d As Dictionary, ByVal r As Range)
     Erase table
 End Sub
 
-Private Sub ToNumeric(ByVal r As Range)
+Sub ToNumeric(ByVal r As Range)
     Dim c As Range
     For Each c In r
         If c.Value <> vbNullString And IsNumeric(c.Value) Then c.Value = CDbl(c.Value)
     Next
 End Sub
 
-Private Function GetColumn(ByVal ws As Worksheet, ByVal columnIndex As Long) As Range
+Function GetColumn(ByVal ws As Worksheet, ByVal columnIndex As Long) As Range
     Set GetColumn = ws.Range(Cells(IIf(ws.Cells(1, columnIndex).Value <> vbNullString, 1, ws.Cells(1, columnIndex).End(xlDown).Row), columnIndex), Cells(ws.Cells(ws.Rows.Count, columnIndex).End(xlUp).Row, columnIndex))
 End Function
 
-Private Sub PasteTable(ByVal r As Range, ByVal table As Variant)
+Sub PasteTable(ByVal r As Range, ByVal table As Variant)
     r.Resize(UBound(table) - LBound(table) + 1, UBound(table, 2) - LBound(table, 2) + 1) = table
 End Sub

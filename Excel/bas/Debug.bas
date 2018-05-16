@@ -1,13 +1,13 @@
 Option Explicit
 
-Private Sub RemoveCommentsForExcel()
+Sub RemoveCommentsForExcel()
     Dim vbc As VBComponent
     For Each vbc In ThisWorkbook.VBProject.VBComponents
         RemoveComments vbc.CodeModule
     Next
 End Sub
 
-Private Sub RemoveCommentsForAccess()
+Sub RemoveCommentsForAccess()
     Dim vbp As VBProject
     For Each vbp In Application.VBE.VBProjects
         Dim vbc As VBComponent
@@ -17,7 +17,7 @@ Private Sub RemoveCommentsForAccess()
     Next
 End Sub
 
-Private Sub RemoveComments(ByVal cm As CodeModule) ' Microsoft Visual Basic for Applications Extensibility 5.3
+Sub RemoveComments(ByVal cm As CodeModule) ' Microsoft Visual Basic for Applications Extensibility x.x
     Const nonComment As Long = -1
     Const blank As Long = -2
     Const fullComment As Long = -3
@@ -64,7 +64,7 @@ Private Sub RemoveComments(ByVal cm As CodeModule) ' Microsoft Visual Basic for 
     Erase lineTypes
 End Sub
 
-Private Function IsContinualComment(ByVal cm As CodeModule, ByRef lineTypes() As Long, ByVal lineIndex As Long) As Boolean
+Function IsContinualComment(ByVal cm As CodeModule, ByRef lineTypes() As Long, ByVal lineIndex As Long) As Boolean
     Const fullComment As Long = -3
     If lineIndex = 1 Then 'IIf makes an error
         IsContinualComment = False
@@ -73,7 +73,7 @@ Private Function IsContinualComment(ByVal cm As CodeModule, ByRef lineTypes() As
     End If
 End Function
 
-Private Sub CreateInsertsForAccess(ByVal ws As Worksheet)
+Sub CreateInsertsForAccess(ByVal ws As Worksheet)
     Dim table As Variant
     table = ws.UsedRange
 
@@ -93,11 +93,11 @@ Private Sub CreateInsertsForAccess(ByVal ws As Worksheet)
     Next
 End Sub
 
-Private Function Quote(ByVal s As String) As String
+Function Quote(ByVal s As String) As String
     Quote = Chr$(39) & s & Chr$(39)
 End Function
 
-Private Sub PrintVBComponents()
+Sub PrintVBComponents()
     Dim vbcs As Object
     Set vbcs = CreateObject("System.Collections.ArrayList")
 
@@ -111,21 +111,21 @@ Private Sub PrintVBComponents()
     Next
 End Sub
 
-Private Sub PrintPivotTables(ByVal ws As Worksheet)
+Sub PrintPivotTables(ByVal ws As Worksheet)
     Dim pt As PivotTable
     For Each pt In ws.PivotTables
         Debug.Print pt.name
     Next
 End Sub
 
-Private Sub PrintCollection(ByVal c As Collection)
+Sub PrintCollection(ByVal c As Collection)
     Dim item As Variant
     For Each item In c
         Debug.Print item
     Next
 End Sub
 
-Private Sub PrintButtonInfo(ByVal sht As Worksheet, ByVal buttonName As String)
+Sub PrintButtonInfo(ByVal sht As Worksheet, ByVal buttonName As String)
     With sht.Buttons(buttonName)
         Debug.Print .name
         Debug.Print .Caption
@@ -137,9 +137,9 @@ Private Sub PrintButtonInfo(ByVal sht As Worksheet, ByVal buttonName As String)
     End With
 End Sub
 
-Private Sub PrintAddins()
+Sub PrintAddins()
     Dim addin As addin
-    
+
     For Each addin In Application.AddIns2
         Debug.Print addin.Name
         Debug.Print addin.Path
@@ -149,7 +149,7 @@ Private Sub PrintAddins()
     Next
 End Sub
 
-Private Sub Backup()
+Sub Backup()
     Dim backupDir As String
     backupDir = ActiveWorkbook.PATH & "\" & "backup"
 

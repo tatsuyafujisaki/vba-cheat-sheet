@@ -1,9 +1,8 @@
 Option Explicit
 
-' Microsoft Beefs Up VBScript with Regular Expressions
-' https://msdn.microsoft.com/library/ms974570.aspx
+' https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/ms974570
 
-Private Sub Demo()
+Sub Demo()
     With New RegExp 'Microsoft VBScript Regular Expressions x.x
         .IgnoreCase = True 'Default is false
         'Test method
@@ -13,7 +12,7 @@ Private Sub Demo()
 
         'Replace method
         .Pattern = "[A-Za-z]+"
-        Debug.Print .Replace("私はMikeです。", "マイク")
+        Debug.Print .Replace("私はTaroです。", "太郎")
 
         'Global property
         .Pattern = "ABC"

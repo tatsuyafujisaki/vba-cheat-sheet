@@ -13,7 +13,7 @@ Sub ToDate(ByVal r As Range)
     Next
 End Sub
 
-Private Sub ExampleOfGetFilename(ByVal filter As String)
+Sub ExampleOfGetFilename(ByVal filter As String)
     'e.g. filter = "Templates (*.xlt), *.xlt"
     Dim fileName As String
     fileName = Application.GetOpenFilename(filter)
@@ -31,7 +31,7 @@ Private Sub ExampleOfGetFilename(ByVal filter As String)
 End Sub
 
 'Usage: ExportVBComponents Array("Excel1.xlsx", "Module1.bas", "ClassModule1.cls", "Form1.frm")
-Private Sub ExportVBComponents(ByVal files As Variant)
+Sub ExportVBComponents(ByVal files As Variant)
     Const DestinationWorkbookName As String = "Production.xlsx"
     Dim fso As New FileSystemObject
     Dim file As Variant
@@ -63,7 +63,7 @@ Private Sub ExportVBComponents(ByVal files As Variant)
     End With
 End Sub
 
-Private Sub ImportSheets(ByVal before As String, ByVal after As String, ParamArray wsNames() As Variant)
+Sub ImportSheets(ByVal before As String, ByVal after As String, ParamArray wsNames() As Variant)
     Const SourceWorkbookName As String = "Release.xlsx"
     Application.DisplayAlerts = False
 

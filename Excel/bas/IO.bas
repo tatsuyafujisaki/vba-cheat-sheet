@@ -12,7 +12,7 @@ Function GetDrivePath(ByVal driveLetter As String) As String
     End With
 End Function
 
-Private Function TableToCSV(table) As String
+Function TableToCSV(table) As String
     TableToCSV = ""
     Dim bounds
     bounds = Array(LBound(table, 2), UBound(table, 2))
@@ -27,7 +27,7 @@ Private Function TableToCSV(table) As String
     TableToCSV = Mid(TableToCSV, 3)
 End Function
 
-Private Function CsvToInserts(ByVal csvPath As String) As Collection
+Function CsvToInserts(ByVal csvPath As String) As Collection
     Dim sqls As New Collection
     Dim csv
     csv = ReadCSV(csvPath)
@@ -51,7 +51,7 @@ Private Function CsvToInserts(ByVal csvPath As String) As Collection
     Set CsvToInserts = sqls
 End Function
 
-Private Function ExcelToCsv(ByVal excelPath As String, Optional ByVal iSheet As Long = 1) As String
+Function ExcelToCsv(ByVal excelPath As String, Optional ByVal iSheet As Long = 1) As String
     With Application
         .ScreenUpdating = False
         .DisplayAlerts = False
@@ -72,13 +72,13 @@ Private Function ExcelToCsv(ByVal excelPath As String, Optional ByVal iSheet As 
     ExcelToCsv = csvPath
 End Function
 
-Private Sub SheetToCSV(ByVal path As String)
+Sub SheetToCSV(ByVal path As String)
     Application.DisplayAlerts = False
     Me.SaveAs path, xlCSV
     Application.DisplayAlerts = True
 End Sub
 
-Private Sub CsvToSheet(ByVal path As String)
+Sub CsvToSheet(ByVal path As String)
     With Me.QueryTables.Add("TEXT;" & path, Me.Cells(1, 1))
         .TextFileCommaDelimiter = True
         .Refresh
@@ -86,7 +86,7 @@ Private Sub CsvToSheet(ByVal path As String)
     End With
 End Sub
 
-Private Function ReadText(ByVal path As String) As String
+Function ReadText(ByVal path As String) As String
     With New FileSystemObject
         With .GetFile(path).OpenAsTextStream
             ReadText = GetTailingNewLinesRemoved(GetUnifiedNewLines(.ReadAll))
@@ -95,7 +95,7 @@ Private Function ReadText(ByVal path As String) As String
     End With
 End Function
 
-Private Function ReadCSV(ByVal path As String)
+Function ReadCSV(ByVal path As String)
     Dim rows
     rows = Split(ReadText(path), vbLf)
 
@@ -120,7 +120,7 @@ Private Function ReadCSV(ByVal path As String)
     ReadCSV = table
 End Function
 
-Private Function ReadCsvBySheet(ByVal path As String)
+Function ReadCsvBySheet(ByVal path As String)
     Application.ScreenUpdating = False
     With Workbooks.Open(path, ReadOnly:=True)
         ReadCSV = .Sheets(1).UsedRange
@@ -129,7 +129,7 @@ Private Function ReadCsvBySheet(ByVal path As String)
     Application.ScreenUpdating = True
 End Function
 
-Private Function ReadCsvByTextDriver(ByVal dir As String, ByVal file As String, Optional ByVal hasHeader As Boolean = False)
+Function ReadCsvByTextDriver(ByVal dir As String, ByVal file As String, Optional ByVal hasHeader As Boolean = False)
     Const CONNECTION_STRING As String = "Driver={Microsoft Text Driver (*.txt; *.csv)};DBQ="
 
     Dim sf As New SchemaFactory
@@ -148,7 +148,7 @@ End Function
 'This is better than the other for two reasons
 '-> The other needs Microsoft Scripting Runtime in References
 '-> The other creates an object (however the creation time is negligible)
-Private Sub WriteText(ByVal path As String, ByVal s As String)
+Sub WriteText(ByVal path As String, ByVal s As String)
     Dim fn As Integer
     fn = FreeFile
 
@@ -157,7 +157,7 @@ Private Sub WriteText(ByVal path As String, ByVal s As String)
     Close fn
 End Sub
 
-Private Sub WriteText(ByVal path As String, ByVal s As String)
+Sub WriteText(ByVal path As String, ByVal s As String)
     With New FileSystemObject
         'Set TristateTrue as 4th parameter for Unicode. Default is TristateFalse (Ascii)
         With .OpenTextFile(path, ForWriting, True)
