@@ -1,4 +1,13 @@
 # Note
+* If you specify the length of an array at its declaration, it fixes the dimension of the array. If the dimension of an array is fixed, `ReDim` throws an error.
+```vba
+Dim xs(2) as String
+ReDim xs(3) As String ' "Array already dimensioned" error
+
+Dim ys() As String
+ReDim ys(3) String ' No error
+ReDim ys(4) String ' No error
+```
 * `Worksheet1.PageSetup` throws an error if no printer is available.
   * [You cannot use page setup properties in Excel if no printers were installed @ Microsoft](https://support.microsoft.com/en-us/help/291298/you-cannot-use-page-setup-properties-in-excel-if-no-printers-were-inst)
 
