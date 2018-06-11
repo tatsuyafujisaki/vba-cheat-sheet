@@ -18,6 +18,19 @@ Const|Private
 Procedure|Public
 Function|Public
 
+## ThisWorkbook
+ThisWorkbook|Meaning
+---|---
+ThisWorkbook.Path|The parent folder of this workbook
+ThisWorkbook.FullName|The absolute path of this workbook
+ThisWorkbook.Name|The name of this workbook
+
+## Environment variables
+```vb
+Environ$("USERNAME")
+Environ$("COMPUTERNAME")
+```
+
 ## Type-declaration characters
 Type-declaration character|Type
 ---|---
@@ -27,12 +40,6 @@ Type-declaration character|Type
 &|Long
 !|Single
 $|String
-
-## Environment variables
-```vb
-Environ$("USERNAME")
-Environ$("Computername")
-```
 
 ## ADO (ActiveX Data Objects)
 * https://docs.microsoft.com/en-us/sql/ado/guide/appendixes/appendix-a-providers
