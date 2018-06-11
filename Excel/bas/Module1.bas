@@ -30,39 +30,6 @@ Sub ExampleOfGetFilename(ByVal filter As String)
     Set ws = wb.Worksheets(fileName)
 End Sub
 
-'Usage: ExportVBComponents Array("Excel1.xlsx", "Module1.bas", "ClassModule1.cls", "Form1.frm")
-Sub ExportVBComponents(ByVal files As Variant)
-    Const DestinationWorkbookName As String = "Production.xlsx"
-    Dim fso As New FileSystemObject
-    Dim file As Variant
-    With Workbooks.Open(ThisWorkbook.Path & Application.PathSeparator & DestinationWorkbookName)
-        For Each file In files
-            Dim path As String
-            path = Environ$("temp") & Application.PathSeparator & file
-
-            Dim module As String
-            module = fso.GetBaseName(file)
-
-            ThisWorkbook.VBProject.VBComponents(module).Export path
-
-            On Error Resume Next
-
-            Dim vbc As VBComponent 'Microsoft Visual Basic for Applications Extensibility x.x
-            Set vbc = .VBProject.VBComponents(module)
-
-            If Err.Number = 0 Then
-                .VBProject.VBComponents.Remove vbc
-            End If
-
-            On Error GoTo 0
-
-            .VBProject.VBComponents.Import path
-            Kill path
-        Next
-        .Close True
-    End With
-End Sub
-
 Sub ImportSheets(ByVal before As String, ByVal after As String, ParamArray wsNames() As Variant)
     Const SourceWorkbookName As String = "Release.xlsx"
     Application.DisplayAlerts = False
