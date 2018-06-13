@@ -19,17 +19,18 @@ Procedure|Public
 Function|Public
 
 ## ThisWorkbook
-ThisWorkbook|Meaning
+ThisWorkbook|Description
 ---|---
 ThisWorkbook.Path|The parent folder of this workbook
 ThisWorkbook.FullName|The absolute path of this workbook
 ThisWorkbook.Name|The name of this workbook
 
-## Environment variables
-```vb
-Environ$("USERNAME")
-Environ$("COMPUTERNAME")
-```
+## Meta
+Keyword|Description
+---|---
+Application.UserName|John Doe (Not Windows account)
+Environ$("USERNAME")|Windows account
+Environ$("COMPUTERNAME")|Computer name
 
 ## Type-declaration characters
 Type-declaration character|Type
